@@ -14,19 +14,26 @@ const SignUp = (props) => {
         <SignUpConatiner>
             <h2>회원가입</h2>
             <Formik
-                initialValues={{ name: '', email: '', password: '', gender: '' }}
+                initialValues={{ name: '', email: '', id:'', password: ''}}
 
-                validationSchema={Yup.object({
+                validationSchema={
+                    //유효성 검사 스키마
+                    Yup.object({
                     name: Yup.string()
                     .max(10, '이름은 10글자 이하로 작성해주세요.')
                     .required('이름을 입력해주세요.'),
                     email: Yup.string().email('유효한 이메일 형식이 아닙니다.')
                     .required('이메일을 작성해주세요.'),
+                    id: Yup.string()
+                    .max(15, '아이디는 15글자 이하로 작성해주세요.')
+                    .required('아이디를 작성해주세요.'),
+                    password: Yup.string()
+                    .max(20, '비밀번호는 20글자 이하로 작성해주세요.')
+                    .required('비밀번호를 입력해주세요.')
                 })}
 
                 onSubmit={(values, { setSubmitting }) => {
-                    alert("?");
-                    users.add(values);
+                    users.doc(values.id).set(values);   //DB에 유저 정보 등록
                 }}
                 >
                 {formik => (
@@ -38,22 +45,19 @@ const SignUp = (props) => {
                             <div>{formik.errors.name}</div>
                         ) : null}
                         <br/>
-
-                        <div>
-                            <label>
-                                남자
-                                <Field type="radio" name="gender" value="man"/>
-                            </label>
-                            <label>
-                                여자
-                                <Field type="radio" name="gender" value="woman"/>
-                            </label>
-                        </div>
                         
                         <Input id="email" type="email" placeholder="이메일"
                             {...formik.getFieldProps('email')} />
                         {formik.touched.email && formik.errors.email ? (
                             <div>{formik.errors.email}</div>
+                        ) : null}
+                        <br/>
+
+                        <Input id="id" type="text" placeholder="아이디"
+                            {...formik.getFieldProps('id')}
+                        />
+                        {formik.touched.id && formik.errors.id ? (
+                            <div>{formik.errors.id}</div>
                         ) : null}
                         <br/>
 
@@ -65,7 +69,7 @@ const SignUp = (props) => {
                         ) : null}
                         <br/>
 
-                        <button type="submit">가입하기</button>
+                        <SignUpBtn type="submit">가입하기</SignUpBtn>
                     </form>
                 )}
             </Formik>
@@ -87,6 +91,15 @@ const SignUpConatiner = styled.div`
 
 const Input = styled.input`
     margin:10px;
+`;
+
+const SignUpBtn = styled.button`
+    padding: 8px 24px;
+    background-color: ${(props) => (props.outlined ? "#ffffff" : "#dadafc")};
+    border-radius: 30px;
+    border: 1px solid #dadafc;
+    width: 200px;
+    margin: 10px 20px;
 `;
 
 export default SignUp;
