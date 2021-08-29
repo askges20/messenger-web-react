@@ -1,6 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 import Welcome from './login/Welcome';
+import Login from './login/Login';
+import SignUp from './login/SignUp';
 import React from 'react';
 
 import {Route, Switch} from 'react-router-dom';
@@ -32,7 +34,11 @@ class App extends React.Component {
     return(
     <div className="App">
       {/* 로그인 X -> Welcome 페이지, 로그인 O -> Chatting 페이지*/}
-      <Welcome/>
+      <Switch>
+        <Route path='/' exact component={Welcome}/>
+        <Route path='/login' exact component={Login}/>
+        <Route path='/signup' exact component={SignUp}/>
+      </Switch>
     </div>
     );
   }
