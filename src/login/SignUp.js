@@ -39,7 +39,7 @@ const SignUp = (props) => {
                 })}
 
                 onSubmit = {(values, { setSubmitting }) => {
-                    users.doc(values.id).set(values);   //DB에 유저 정보 등록
+                    users.doc(values.email).set({'id':values.id, 'name':values.name});   //DB에 유저 정보 등록
                     signUp(values.email, values.password);
                     alert('회원가입이 완료되었습니다.');
                     history.push('/login');

@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
-import withFirebaseAuth from 'react-with-firebase-auth'
+// import withFirebaseAuth from 'react-with-firebase-auth'
 
 const firebaseConfig = {
     apiKey: "AIzaSyCwYlqExgXkEafaw52XkxlLP-lwmdfU7a8",
@@ -20,11 +20,6 @@ const auth = firebase.auth;
 const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider(),
 };
-
-const emailSettings = {
-  url: 'https://www.google.co.kr',
-  handleCodeInApp: true,
-}
 
 export {firestore, auth};
 // export default withFirebaseAuth({firestore, auth, providers});
