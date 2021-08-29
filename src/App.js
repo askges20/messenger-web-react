@@ -1,9 +1,10 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 import Welcome from './login/Welcome';
 import Login from './login/Login';
 import SignUp from './login/SignUp';
-import React from 'react';
+
+import auth from './services/firebase';
 
 import {Route, Switch} from 'react-router-dom';
 
