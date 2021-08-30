@@ -1,18 +1,22 @@
 import React from 'react';
 import styled from "styled-components";
 
+import { useHistory } from 'react-router-dom';
+
 const Welcome = (props) => {
+    const history = useHistory();
+
     return(
         <WelcomeConatiner>
         <p>안녕하세요! 처음이시면 회원가입을 해주세요.</p>
             <Btn
                 onClick={() => {
-                    window.location.href='/login';
+                    history.push('/login');
                 }}
             >로그인</Btn>
             <Btn
                 onClick={() => {
-                    window.location.href='/signup';
+                    history.push('/signup');
                 }}
             >회원가입</Btn>
         </WelcomeConatiner>

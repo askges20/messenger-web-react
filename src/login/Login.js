@@ -44,7 +44,6 @@ const Login = (props) => {
                                 }
                             })
                         })
-                        alert("로그인 성공!");
                         history.push('/');
                     }).catch((error) => {
                         switch(error.code){

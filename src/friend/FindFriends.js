@@ -11,8 +11,8 @@ const FindFriends = (props) => {
 
     return(
         <FindFriendsConatiner>
-            <h4>채팅 친구를 찾아보세요!</h4>
-            <p>친구의 아이디를 검색해서 찾을 수 있습니다.</p>
+            <h3 style={{margin:'20px'}}>채팅 친구를 찾아보세요!</h3>
+            <p style={{margin:'10px'}}>친구의 아이디를 검색해서 찾을 수 있습니다.</p>
             <Formik
                 initialValues={{id: ''}}
 

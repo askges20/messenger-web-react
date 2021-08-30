@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from "styled-components";
 
+import Profile from './Profile';
+
 import { useHistory } from 'react-router-dom';
 
 const SideBar = (props) => {
@@ -8,7 +10,7 @@ const SideBar = (props) => {
 
     return(
         <SideBarConatiner>
-            <p>내용</p>
+            <Profile/>
         </SideBarConatiner>
     )
 };

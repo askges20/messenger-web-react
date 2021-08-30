@@ -1,20 +1,41 @@
 import React from 'react';
 import styled from "styled-components";
 
-import TopBar from './components/TopBar';
 import SideBar from './components/SideBar';
 import ChatList from './chat/ChatList';
 
 import { useHistory } from 'react-router-dom';
 import FindFriends from './friend/FindFriends';
+import { userSignOut } from './helpers/auth';
+
+import ChatIcon from './img/chat-icon.png';
+import FriendIcon from './img/friends-icon.png';
+import LogoutIcon from './img/logout-icon.png';
 
 const Main = (props) => {
     const history = useHistory();
-    const [menu, setMenu] = React.useState('friend');
+    const [menu, setMenu] = React.useState('friend');   //메뉴 선택 값을 상태 관리
+    const logout = () => {
+        let popup = window.confirm('로그아웃 하시겠습니까?');
+        if (popup) {    //'예'를 선택했을 때
+            userSignOut();  //로그아웃
+            history.push('/'); //웰컴 화면으로 이동
+        }
+    }
 
     return(
         <MainConatiner>
-            <TopBar/>
+            <TopBarConatiner>
+                <TopBarIcon src={ChatIcon} onClick={() => {
+                    setMenu('chat');
+                }}/>
+                <TopBarIcon src={FriendIcon} onClick={() => {
+                    setMenu('friend')
+                }}/>
+                <TopBarIcon src={LogoutIcon} onClick={() => {
+                    logout();
+                }}/>
+            </TopBarConatiner>
             <div>
                 <SideBar/>
                 {menu == 'friend' ? <FindFriends/> : <ChatList/>}
@@ -32,6 +53,25 @@ const MainConatiner = styled.div`
     flex-direction: column;
     // justify-content: center;
     // align-items: center;
+`;
+
+const TopBarConatiner = styled.div`
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 50px;
+    box-sizing: border-box;
+    background: linear-gradient( to top, #FFA9EE, #FF85CA );
+    text-align: right;
+`;
+
+const TopBarIcon = styled.img`
+    padding-top: 10px;
+    height: 30px;
+    align: center;
+    margin: 0 15px;
+    cursor: pointer;
+    filter: opacity(0.4) drop-shadow(0 0 0 #DB005B);
 `;
 
 export default Main;
