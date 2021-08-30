@@ -8,20 +8,31 @@ const ChatList = (props) => {
 
     return(
         <ChatMainConatiner>
-            <h2>채팅 화면</h2>
+            <ChatBox>
+            </ChatBox>
         </ChatMainConatiner>
     )
 };
 
 const ChatMainConatiner = styled.div`
+    position: fixed;
+    right: 0;
     display:flex;
-    width: 100%;
-    overflow: hidden;
-    padding: 16px;
+    width: 80%;
+    height: calc(100vh - 50px);
+    padding: 20px;
     box-sizing: border-box;
     flex-direction: column;
-    // justify-content: center;
-    // align-items: center;
+    justify-content: center;
+    align-items: center;
+    background-color: yellow;
+`;
+
+const ChatBox = styled.div`
+    width: 100%;
+    height: 100%;
+    border-radius: 30px;
+    background-color: white;
 `;
 
 export default ChatList;
