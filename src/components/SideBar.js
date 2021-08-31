@@ -3,10 +3,7 @@ import styled from "styled-components";
 
 import Profile from './Profile';
 
-import { useHistory } from 'react-router-dom';
-
 const SideBar = (props) => {
-    const history = useHistory();
 
     return(
         <SideBarConatiner>

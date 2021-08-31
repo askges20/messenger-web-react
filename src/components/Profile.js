@@ -2,24 +2,11 @@ import React, { useEffect } from 'react';
 import styled from "styled-components";
 
 import userImg from '../img/user.png';
-import { auth, firestore } from '../services/firebase';
-import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 function Profile(props) {
-    const history = useHistory();
-    const [id, setId] = React.useState('id');
-    const [name, setName] = React.useState('name');
-
-    useEffect(() => {
-        auth().onAuthStateChanged((user) => {
-            console.log('로그인한 이메일 : ' + user.email);
-            const users = firestore.collection('users');
-            users.doc(user.email).get().then((doc) => {
-                setId(doc.data().id);
-                setName(doc.data().name);
-            });
-        });
-    }, []);
+    const id = useSelector(state => state.user.id);
+    const name = useSelector(state => state.user.name);
 
     return(
         <ProfileConatiner>

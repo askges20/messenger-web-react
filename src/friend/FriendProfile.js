@@ -29,12 +29,21 @@ const FriendProfile = (props) => {
         findUser();
     }, []);
 
+    const addFriend = () => {
+        const select = prompt('친구로 추가하시겠습니까?');
+        if (select) {
+            console.log('친구 추가하기');
+            // firestore.collection('users');
+        }
+    }
+
     return(
         <FriendProfileConatiner>
             {isLoaded ? (
                 <div>
                     <FriendImg/>
                     <FriendName>{friendName}</FriendName>
+                    <AddFriendBtn onClick={addFriend()}>친구 추가하기</AddFriendBtn>
                 </div>
             ) : '친구 검색 중...'}
         </FriendProfileConatiner>
@@ -75,5 +84,22 @@ const FriendName = styled.div`
 FriendImg.defaultProps = {
     src: userImg,
 }
+
+const AddFriendBtn = styled.button`
+    padding: 8px 24px;
+    background-color: #dadafc;
+    border-radius: 30px;
+    border: 1px solid #dadafc;
+    width: 150px;
+    margin: 10px 20px;
+    cursor: pointer;
+    box-shadow: 1px 2px purple;
+
+    &:active {
+        box-shadow: 1px 1px 0 rgb(0,0,0,0.5);
+        position: relative;
+        top:2px;
+    }
+`;
 
 export default FriendProfile;
