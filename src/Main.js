@@ -56,9 +56,11 @@ const MainConatiner = styled.div`
 `;
 
 const TopBarConatiner = styled.div`
-    position: sticky;
+    z-index: 1;
+    position: fixed;
     top: 0;
-    width: 100%;
+    left: 0;
+    right: 0;
     height: 50px;
     box-sizing: border-box;
     background: linear-gradient( to top, #FFA9EE, #FF85CA );

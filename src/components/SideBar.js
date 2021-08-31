@@ -17,6 +17,7 @@ const SideBar = (props) => {
 
 const SideBarConatiner = styled.div`
     position: fixed;
+    top: 50px;
     width: 20%;
     height: calc(100vh - 50px);
     overflow: scroll;

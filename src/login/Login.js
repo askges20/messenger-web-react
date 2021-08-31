@@ -93,8 +93,8 @@ const SignInConatiner = styled.div`
     padding: 16px;
     box-sizing: border-box;
     flex-direction: column;
-    // justify-content: center;
-    // align-items: center;
+    justify-content: center;
+    align-items: center;
 `;
 
 const Input = styled.input`
