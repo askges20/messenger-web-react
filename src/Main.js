@@ -7,6 +7,8 @@ import ChatList from './chat/ChatList';
 import { useHistory } from 'react-router-dom';
 import FindFriends from './friend/FindFriends';
 import { userSignOut } from './helpers/auth';
+import { resetUser } from './redux/modules/user';
+import { useSelector, useDispatch } from 'react-redux';
 
 import ChatIcon from './img/chat-icon.png';
 import FriendIcon from './img/friends-icon.png';
@@ -14,11 +16,15 @@ import LogoutIcon from './img/logout-icon.png';
 
 const Main = (props) => {
     const history = useHistory();
+    const dispatch = useDispatch();
+    
     const [menu, setMenu] = React.useState('friend');   //메뉴 선택 값을 상태 관리
+
     const logout = () => {
         let popup = window.confirm('로그아웃 하시겠습니까?');
         if (popup) {    //'예'를 선택했을 때
             userSignOut();  //로그아웃
+            dispatch(resetUser());  //redux 유저 정보 초기화
             history.push('/'); //웰컴 화면으로 이동
         }
     }

@@ -4,6 +4,7 @@ const user_db = firestore.collection('users');
 
 //Actions
 const GET_USER = 'user/GET_USER';
+const RESET_USER = 'user/RESET_USER';
 const IS_LOADED = 'user/IS_LOADED';
 
 const initialState = {
@@ -16,6 +17,10 @@ const initialState = {
 //Action Creators
 export const loadUser = (email, id, name) => {
     return {type: GET_USER, data: {email:email, id:id, name:name}};
+}
+
+export const resetUser = () => {
+    return {type: RESET_USER};
 }
 
 export const isLoaded = (loaded) => {
@@ -42,6 +47,9 @@ export default function reducer(state = initialState, action = {}){
         case 'user/GET_USER': {
             return {email: action.data.email, id: action.data.id,
                 name: action.data.name};
+        }
+        case 'user/RESET_USER': {
+            return initialState;
         }
         case 'user/LOADED': {
             return {...state, is_loaded: action.loaded};
