@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from "styled-components";
 
 import FriendProfile from './FriendProfile';
@@ -11,6 +11,10 @@ import { useHistory } from 'react-router-dom';
 const FindFriends = (props) => {
     const history = useHistory();
     const [searchId, setSearchId] = React.useState('');   //검색 아이디 상태 관리
+
+    useEffect(() => {
+        console.log(searchId);
+    });
 
     return(
         <FindFriendsConatiner>
@@ -43,7 +47,7 @@ const FindFriends = (props) => {
                     </form>
                 )}
             </Formik>
-            {searchId != '' ? <FriendProfile friendId={searchId}/> : <div></div>}
+            {searchId != '' ? <FriendProfile friendId={searchId} key={searchId}/> : <div></div>}
         </FindFriendsConatiner>
     )
 };

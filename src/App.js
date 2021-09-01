@@ -55,7 +55,7 @@ class App extends React.Component {
     <div className="App">
       {/* 로그인 X -> Welcome 페이지, 로그인 O -> Chatting 페이지*/}
       <Switch>
-        {(this.props.user_email == null ?
+        {(this.props.user_email == '' ?
           <Route exact path='/' render={(props) => (<Welcome/>)}/> :
           <Route exact path='/' render={(props) => (<Main/>)}/>)
         }

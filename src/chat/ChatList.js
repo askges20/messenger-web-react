@@ -15,17 +15,18 @@ const ChatList = (props) => {
 };
 
 const ChatMainConatiner = styled.div`
-    position: fixed;
+    position: absolute;
+    top: 50px;
     right: 0;
     display:flex;
-    width: 80%;
+    width: calc(100vw - 20%);
     height: calc(100vh - 50px);
     padding: 20px;
     box-sizing: border-box;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: yellow;
+    background-color: #FFD9FA;
 `;
 
 const ChatBox = styled.div`
