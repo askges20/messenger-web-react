@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from "styled-components";
 
 import userImg from '../img/user.png';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 function Profile(props) {
     const id = useSelector(state => state.user.id);

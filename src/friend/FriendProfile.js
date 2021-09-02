@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react';
 import styled from "styled-components";
 
+import { useSelector, useDispatch } from 'react-redux';
 import { firestore } from '../services/firebase';
 import userImg from '../img/user.png';
 
 const FriendProfile = (props) => {
+    const loginUserEmail = useSelector(state => state.user.email);
     const friendId = props.friendId;
     const [isLoaded, setLoaded] = React.useState(false);
+    const [friendEmail, setFriendEmail] = React.useState('');
     const [friendName, setFriendName] = React.useState('');
 
     //firebase firestore에서 해당 유저 검색
@@ -14,6 +17,7 @@ const FriendProfile = (props) => {
         firestore.collection('users').get().then((docs) => {
             docs.forEach((doc) => {
                 if (doc.data().id == friendId) {
+                    setFriendEmail(doc.id);
                     setFriendName(doc.data().name);
                     setLoaded(true);
                 }
@@ -32,7 +36,8 @@ const FriendProfile = (props) => {
         let popup = window.confirm('친구로 추가하시겠습니까?');
         if (popup) {    //'예'를 선택했을 때
             console.log('친구 추가하기');
-            // firestore.collection('users');
+            firestore.collection('users').doc(loginUserEmail).collection('friends').doc(friendEmail).set({id: friendId})
+                .then(() => {alert('친구로 등록되었습니다.')});
         }
     }
 
