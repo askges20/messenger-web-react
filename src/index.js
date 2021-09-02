@@ -9,11 +9,9 @@ import store from './redux/configStore';
 
 ReactDOM.render(
   <Provider store={store}>
-    {/* <ReactReduxFirebaseProvider> */}
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    {/* </ReactReduxFirebaseProvider> */}
   </Provider>,
   document.getElementById('root')
 );

@@ -36,7 +36,7 @@ const FriendProfile = (props) => {
         let popup = window.confirm('친구로 추가하시겠습니까?');
         if (popup) {    //'예'를 선택했을 때
             console.log('친구 추가하기');
-            firestore.collection('users').doc(loginUserEmail).collection('friends').doc(friendEmail).set({id: friendId})
+            firestore.collection('users').doc(loginUserEmail).collection('friends').doc(friendEmail).set({id: friendId, name: friendName})
                 .then(() => {alert('친구로 등록되었습니다.')});
         }
     }

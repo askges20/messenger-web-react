@@ -2,12 +2,14 @@ import React from 'react';
 import styled from "styled-components";
 
 import Profile from './Profile';
+import FriendList from '../friend/FriendList';
 
 const SideBar = (props) => {
 
     return(
         <SideBarConatiner>
             <Profile/>
+            <FriendList/>
         </SideBarConatiner>
     )
 };
@@ -18,7 +20,6 @@ const SideBarConatiner = styled.div`
     width: 20%;
     height: calc(100vh - 50px);
     overflow: scroll;
-    padding: 16px;
     overflow-x: hidden;
     overflow-y: scroll;
     box-sizing: border-box;
