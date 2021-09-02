@@ -38,7 +38,9 @@ const FriendList = (props) => {
             {
                 friends.map((value, i) => {
                     return (
-                        <div className="btn10" key={i}>
+                        <div className="btn10" key={i} onClick={() => {
+                            window.open('/chatroom/' + value.name + '/' + value.email, '', '_blank', 'resizable=no');
+                        }}>
                             <span>{value.name}</span>
                             <div className="transition"></div>
                         </div>

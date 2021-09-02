@@ -5,6 +5,7 @@ import Welcome from './login/Welcome';
 import Login from './login/Login';
 import SignUp from './login/SignUp';
 import Main from './Main';
+import ChatRoom from './chat/ChatRoom';
 
 import {withRouter} from 'react-router';
 import {Route, Switch} from 'react-router-dom';
@@ -61,6 +62,7 @@ class App extends React.Component {
         }
         <Route path='/login' exact component={Login}/>
         <Route path='/signup' exact component={SignUp}/>
+        <Route path='/chatroom/:friend_name/:friend_email' exact component={ChatRoom}/>
       </Switch>
     </div>
     );
