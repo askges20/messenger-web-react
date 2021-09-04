@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from "styled-components";
+import moment from 'moment';
+import 'moment/locale/ko';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { firestore } from '../services/firebase';
@@ -34,15 +36,7 @@ const FriendProfile = (props) => {
 
     //현재 날짜와 시간을 이용해서 채팅방 번호 생성
     function makeChatRoomNum() {
-        const today = new Date();   //현재 날짜
-        const year = today.getFullYear();
-        const month = ('0' + (today.getMonth() + 1)).slice(-2);
-        const day = ('0' + today.getDate()).slice(-2);
-        const hours = ('0' + today.getHours()).slice(-2);
-        const minutes = ('0' + today.getMinutes()).slice(-2);
-        const seconds = ('0' + today.getSeconds()).slice(-2);
-        
-        return year + month + day + hours + minutes + seconds + loginUserId;
+        return moment().format('YYYYMMDDHHmmss') + loginUserId;
     }
 
     //친구 추가
@@ -51,9 +45,16 @@ const FriendProfile = (props) => {
         if (popup) {    //'예'를 선택했을 때
             console.log('친구 추가하기');
             const chatRoomNum = makeChatRoomNum();
+
+            //친구 등록 완료
             firestore.collection('users').doc(loginUserEmail).collection('friends').doc(friendEmail).set({id: friendId, name: friendName, chatRoomNum: chatRoomNum})
-                .then(() => {alert('친구로 등록되었습니다.')});
-            firestore.collection('chatRooms').doc(chatRoomNum).collection('members').doc()
+                .then(() => {
+                    alert('친구로 등록되었습니다.')}
+                );
+
+            //채팅방 멤버로 등록
+            firestore.collection('chatRooms').doc(chatRoomNum).collection('members').doc(loginUserEmail).set({isMember: true});
+            firestore.collection('chatRooms').doc(chatRoomNum).collection('members').doc(friendEmail).set({isMember: true});
         }
     }
 
