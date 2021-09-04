@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
+import moment from 'moment';
+import 'moment/locale/ko';
 
 import SendChatMessage from './SendChatMessage';
 import ReceiveChatMessage from './ReceiveChatMessage';
@@ -13,21 +15,11 @@ const ChatRoom = (props) => {
     const content = React.useRef(); //채팅 input 박스
 
     function getDate() {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = ('0' + (today.getMonth() + 1)).slice(-2);
-        const day = ('0' + today.getDate()).slice(-2);
-        
-        return year + month + day;
+        return moment().format('YYYYMMDD');
     }
 
     function getTime() {
-        const today = new Date();
-        const hours = ('0' + today.getHours()).slice(-2);
-        const minutes = ('0' + today.getMinutes()).slice(-2);
-        const seconds = ('0' + today.getSeconds()).slice(-2);
-
-        return hours + ':' + minutes + ':' + seconds;
+        return moment().format('HH:mm:ss');
     }
 
     function sendMessage() {
