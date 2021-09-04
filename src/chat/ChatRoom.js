@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from "styled-components";
 
+import SendChatMessage from './SendChatMessage';
+import ReceiveChatMessage from './ReceiveChatMessage';
+
 import { firestore } from '../services/firebase';
 import { useSelector } from 'react-redux';
 
@@ -51,7 +54,10 @@ const ChatRoom = (props) => {
         <ChatBox>
             <ChatTopBar>{props.match.params.friend_name}</ChatTopBar>
 
-            <ChatContent></ChatContent>
+            <ChatContent>
+                <SendChatMessage/>
+                <ReceiveChatMessage/>
+            </ChatContent>
 
             <ChatInput ref={content}></ChatInput>
             <ChatInputBtn onClick={() => {
@@ -79,7 +85,7 @@ const ChatBox = styled.div`
     width: 90%;
     height: 90%;
     overflow: hidden;
-    border-radius: 30px;
+    border-radius: 20px;
     background-color: white;
 `;
 
@@ -93,14 +99,15 @@ const ChatTopBar = styled.div`
     background-color: pink;
     text-align: left;
     line-height: 50px;
+    font-weight: 700;
 `;
 
 const ChatContent = styled.div`
     position: absolute;
     top: 50px;
-    left: 5%;
-    width: 90%;
+    width: calc(100% - 20px);
     height: calc(100% - 100px);
+    padding: 10px;
 `;
 
 const ChatInput = styled.input`
