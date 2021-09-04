@@ -1,11 +1,19 @@
 import React from 'react';
 import styled from "styled-components";
 
-import { useHistory } from 'react-router-dom';
-
 const ChatRoom = (props) => {
 
-    console.log(props.match.params.friend_email);
+    const content = React.useRef();
+
+    function sendMessage() {
+        const value = content.current.value;
+        if (value.length == 0) {
+            alert('채팅 내용을 입력해주세요');
+        } else {
+            console.log(content.current.value);
+            content.current.value = '';
+        }
+    }
 
     return(
         <ChatRoomConatiner>
@@ -14,8 +22,10 @@ const ChatRoom = (props) => {
 
             <ChatContent></ChatContent>
 
-            <ChatInput></ChatInput>
-            <ChatInputBtn onClick={() => {alert("전송 클릭")}}>전송</ChatInputBtn>
+            <ChatInput ref={content}></ChatInput>
+            <ChatInputBtn onClick={() => {
+                sendMessage();
+            }}>전송</ChatInputBtn>
         </ChatBox>
         </ChatRoomConatiner>
     )

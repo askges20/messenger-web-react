@@ -31,12 +31,26 @@ const FriendProfile = (props) => {
         findUser();
     }, []);
 
+    //현재 날짜와 시간을 이용해서 채팅방 번호 생성
+    function makeChatRoomNum() {
+        const today = new Date();   //현재 날짜
+        const year = today.getFullYear();
+        const month = ('0' + (today.getMonth() + 1)).slice(-2);
+        const day = ('0' + today.getDate()).slice(-2);
+        const hours = ('0' + today.getHours()).slice(-2);
+        const minutes = ('0' + today.getMinutes()).slice(-2);
+        const seconds = ('0' + today.getSeconds()).slice(-2);
+        
+        return year + month + day + hours + minutes + seconds + loginUserEmail;
+    }
+
     //친구 추가
     const addFriend = () => {
         let popup = window.confirm('친구로 추가하시겠습니까?');
         if (popup) {    //'예'를 선택했을 때
             console.log('친구 추가하기');
-            firestore.collection('users').doc(loginUserEmail).collection('friends').doc(friendEmail).set({id: friendId, name: friendName})
+            const chatRoomNum = makeChatRoomNum();
+            firestore.collection('users').doc(loginUserEmail).collection('friends').doc(friendEmail).set({id: friendId, name: friendName, chatRoomNum: chatRoomNum})
                 .then(() => {alert('친구로 등록되었습니다.')});
         }
     }
