@@ -7,6 +7,7 @@ import userImg from '../img/user.png';
 
 const FriendProfile = (props) => {
     const loginUserEmail = useSelector(state => state.user.email);
+    const loginUserId = useSelector(state => state.user.id);
     const friendId = props.friendId;
     const [isLoaded, setLoaded] = React.useState(false);
     const [friendEmail, setFriendEmail] = React.useState('');
@@ -41,7 +42,7 @@ const FriendProfile = (props) => {
         const minutes = ('0' + today.getMinutes()).slice(-2);
         const seconds = ('0' + today.getSeconds()).slice(-2);
         
-        return year + month + day + hours + minutes + seconds + loginUserEmail;
+        return year + month + day + hours + minutes + seconds + loginUserId;
     }
 
     //친구 추가
@@ -52,6 +53,7 @@ const FriendProfile = (props) => {
             const chatRoomNum = makeChatRoomNum();
             firestore.collection('users').doc(loginUserEmail).collection('friends').doc(friendEmail).set({id: friendId, name: friendName, chatRoomNum: chatRoomNum})
                 .then(() => {alert('친구로 등록되었습니다.')});
+            firestore.collection('chatRooms').doc(chatRoomNum).collection('members').doc()
         }
     }
 

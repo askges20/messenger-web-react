@@ -62,7 +62,7 @@ class App extends React.Component {
         }
         <Route path='/login' exact component={Login}/>
         <Route path='/signup' exact component={SignUp}/>
-        <Route path='/chatroom/:friend_name/:friend_email' exact component={ChatRoom}/>
+        <Route path='/chatroom/:friend_name/:chat_room_num' exact component={ChatRoom}/>
       </Switch>
     </div>
     );

@@ -18,7 +18,7 @@ const FriendList = (props) => {
             //현재는 친구 등록 시 name을 같이 저장해서 바로 가져올 수 있음
             //나중에 가능하면 name은 사용자 정보를 검색해서 가져오도록 바꿀 것
             docs.forEach((doc) => {
-                listFromFB.push({email: doc.id, id: doc.data().id, name: doc.data().name});
+                listFromFB.push({id: doc.data().id, name: doc.data().name, chatRoomNum: doc.data().chatRoomNum});
             });
             setFriends(listFromFB);
 
@@ -39,7 +39,7 @@ const FriendList = (props) => {
                 friends.map((value, i) => {
                     return (
                         <div className="btn10" key={i} onClick={() => {
-                            window.open('/chatroom/' + value.name + '/' + value.email, '', '_blank', 'resizable=no');
+                            window.open('/chatroom/' + value.name + '/' + value.chatRoomNum, '', '_blank', 'resizable=no');
                         }}>
                             <span>{value.name}</span>
                             <div className="transition"></div>
