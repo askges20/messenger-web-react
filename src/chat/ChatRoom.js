@@ -89,13 +89,11 @@ const ChatRoom = (props) => {
                             );
                         } else {
                             return (
-                                <ReceiveChatMessage key={i} content={value.content} time={value.time} senderId={value.senderId}/>
+                                <ReceiveChatMessage key={i} content={value.content} time={value.time} friendName={props.match.params.friend_name}/>
                             );
                         }
                     })
                 }
-                {/* <SendChatMessage/>
-                <ReceiveChatMessage/> */}
             </ChatContent>
 
             <ChatInput ref={content}></ChatInput>

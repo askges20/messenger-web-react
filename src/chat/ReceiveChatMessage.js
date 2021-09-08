@@ -4,7 +4,7 @@ import styled from "styled-components";
 const ReceiveChatMessage = (props) => {
     return(
         <MessageContainer>
-            <FriendName>{props.senderId}</FriendName>
+            <FriendName>{props.friendName}</FriendName>
             <ChatBox>{props.content}</ChatBox>
             <ChatTime>{props.time}</ChatTime>
         </MessageContainer>

@@ -44,17 +44,27 @@ const FriendProfile = (props) => {
         let popup = window.confirm('친구로 추가하시겠습니까?');
         if (popup) {    //'예'를 선택했을 때
             console.log('친구 추가하기');
-            const chatRoomNum = makeChatRoomNum();
+            let chatRoomNum = '';
 
-            //친구 등록 완료
-            firestore.collection('users').doc(loginUserEmail).collection('friends').doc(friendEmail).set({id: friendId, name: friendName, chatRoomNum: chatRoomNum})
+            firestore.collection('users').doc(friendEmail).collection('friends').doc(loginUserEmail).get().then((doc) => {
+                if (doc.exists){
+                    chatRoomNum = doc.data().chatRoomNum;
+                    alert('기존에 있는 채팅방 번호 이용' + chatRoomNum);
+                } else {
+                    alert('새로운 채팅방 번호 만들기');
+                    chatRoomNum = makeChatRoomNum();
+
+                    //채팅방 멤버로 등록
+                    firestore.collection('chatRooms').doc(chatRoomNum).collection('members').doc(loginUserEmail).set({isMember: true});
+                    firestore.collection('chatRooms').doc(chatRoomNum).collection('members').doc(friendEmail).set({isMember: true});
+                }
+                
+                //친구 등록 완료
+                firestore.collection('users').doc(loginUserEmail).collection('friends').doc(friendEmail).set({id: friendId, name: friendName, chatRoomNum: chatRoomNum})
                 .then(() => {
                     alert('친구로 등록되었습니다.')}
                 );
-
-            //채팅방 멤버로 등록
-            firestore.collection('chatRooms').doc(chatRoomNum).collection('members').doc(loginUserEmail).set({isMember: true});
-            firestore.collection('chatRooms').doc(chatRoomNum).collection('members').doc(friendEmail).set({isMember: true});
+            })
         }
     }
 
