@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from "styled-components";
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -13,6 +13,40 @@ const ChatRoom = (props) => {
     const loginId = useSelector(state => state.user.id);
     const chatRoomNum = props.match.params.chat_room_num;
     const content = React.useRef(); //채팅 input 박스
+
+    const [chatHistory, setChatHistory] = React.useState([]);   //채팅 기록을 상태로 관리
+    const chatMessageFB = firestore.collection('chatRooms').doc(chatRoomNum).collection('chatMessages');
+
+    useEffect(() => {
+        chatMessageFB.doc('20210909').collection('userMessage').onSnapshot((docs) => {
+            let chatFromFB = [];
+            console.log(docs)
+            docs.forEach((doc) => {
+                chatFromFB.push({
+                    senderId: doc.data().senderId,
+                    content: doc.data().content,
+                    time: doc.data().time
+                })
+            })
+            setChatHistory(chatFromFB);
+        });
+
+        // chatMessageFB.get().then((docs) => {
+        //     let chatFromFB = [];
+        //     docs.forEach((doc) => {
+        //         console.log("?");
+        //         doc.ref.collection('userMessage').get().then((message) => {
+        //             chatFromFB.push({
+        //                 senderId: message.data().senderId,
+        //                 content: message.data().content,
+        //                 time: message.data().time
+        //             })
+        //         })
+        //         setChatHistory(chatFromFB);
+        //     })
+        //     console.log(chatFromFB);
+        // })
+    }, []);
 
     function getDate() {
         return moment().format('YYYYMMDD');
@@ -33,7 +67,7 @@ const ChatRoom = (props) => {
             const messageCode = time + loginId;
 
             firestore.collection('chatRooms').doc(chatRoomNum).collection('chatMessages')
-            .doc(date).collection('userMessage').doc(messageCode).set({content: value, time: time.slice(0, -3)}).then(
+            .doc(date).collection('userMessage').doc(messageCode).set({content: value, time: time.slice(0, -3), senderId: loginId}).then(
                 //전송 완료 (DB 등록)
             );
 
@@ -47,8 +81,21 @@ const ChatRoom = (props) => {
             <ChatTopBar>{props.match.params.friend_name}</ChatTopBar>
 
             <ChatContent>
-                <SendChatMessage/>
-                <ReceiveChatMessage/>
+                {
+                    chatHistory.map((value, i) => {
+                        if (value.senderId == loginId){
+                            return (
+                                <SendChatMessage key={i} content={value.content} time={value.time}/>
+                            );
+                        } else {
+                            return (
+                                <ReceiveChatMessage key={i} content={value.content} time={value.time} senderId={value.senderId}/>
+                            );
+                        }
+                    })
+                }
+                {/* <SendChatMessage/>
+                <ReceiveChatMessage/> */}
             </ChatContent>
 
             <ChatInput ref={content}></ChatInput>

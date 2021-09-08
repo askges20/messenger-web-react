@@ -4,9 +4,9 @@ import styled from "styled-components";
 const ReceiveChatMessage = (props) => {
     return(
         <MessageContainer>
-            <FriendName>이름</FriendName>
-            <ChatBox>받은 메세지</ChatBox>
-            <ChatTime>17:00</ChatTime>
+            <FriendName>{props.senderId}</FriendName>
+            <ChatBox>{props.content}</ChatBox>
+            <ChatTime>{props.time}</ChatTime>
         </MessageContainer>
     );
 }

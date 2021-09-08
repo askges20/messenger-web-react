@@ -4,8 +4,8 @@ import styled from "styled-components";
 const SendChatMessage = (props) => {
     return(
         <MessageContainer>
-            <ChatBox>보낸 메세지</ChatBox>
-            <ChatTime>17:00</ChatTime>
+            <ChatBox>{props.content}</ChatBox>
+            <ChatTime>{props.time}</ChatTime>
         </MessageContainer>
         
     );
