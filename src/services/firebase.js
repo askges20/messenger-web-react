@@ -1,7 +1,6 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
-// import { getAuth } from 'firebase/auth'; //ver 9
 import { getDatabase } from 'firebase/database';
 
 const firebaseConfig = {
@@ -20,12 +19,10 @@ firebase.initializeApp(firebaseConfig);
 const firestore = firebase.firestore();  //firestore DB 연결
 
 //firebase ver 9
-// const auth = getAuth();
 const database = getDatabase();
 
 // firebase ver 8
 const auth = firebase.auth;
-// const database = firebase.database();
 
 
 export {firestore, auth, database};

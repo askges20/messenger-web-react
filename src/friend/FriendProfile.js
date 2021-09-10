@@ -4,7 +4,8 @@ import moment from 'moment';
 import 'moment/locale/ko';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { firestore } from '../services/firebase';
+import { firestore, database } from '../services/firebase';
+import { addChatMember } from '../helpers/database';
 import userImg from '../img/user.png';
 
 const FriendProfile = (props) => {
@@ -49,14 +50,14 @@ const FriendProfile = (props) => {
             firestore.collection('users').doc(friendEmail).collection('friends').doc(loginUserEmail).get().then((doc) => {
                 if (doc.exists){
                     chatRoomNum = doc.data().chatRoomNum;
-                    alert('기존에 있는 채팅방 번호 이용' + chatRoomNum);
+                    // alert('기존에 있는 채팅방 번호 이용' + chatRoomNum);
                 } else {
-                    alert('새로운 채팅방 번호 만들기');
+                    // alert('새로운 채팅방 번호 만들기');
                     chatRoomNum = makeChatRoomNum();
 
-                    //채팅방 멤버로 등록
-                    firestore.collection('chatRooms').doc(chatRoomNum).collection('members').doc(loginUserEmail).set({isMember: true});
-                    firestore.collection('chatRooms').doc(chatRoomNum).collection('members').doc(friendEmail).set({isMember: true});
+                    //채팅방 멤버로 등록 (Firestore -> Realtime Database)
+                    addChatMember(chatRoomNum, loginUserId, loginUserEmail);
+                    addChatMember(chatRoomNum, friendId, friendEmail);
                 }
                 
                 //친구 등록 완료
