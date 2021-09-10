@@ -2,7 +2,6 @@ import React from 'react';
 import styled from "styled-components";
 
 import { signIn } from '../helpers/auth';
-import firebase from 'firebase/app';
 import { auth } from '../services/firebase';
 
 import { Formik } from 'formik';
@@ -29,7 +28,7 @@ const Login = (props) => {
                 onSubmit = {(values, { setSubmitting }) => {
                     signIn(values.email, values.password).then(() => {
                         //인증 상태 지속성 유형 (현재는 LOCAL, 나중에 SESSION으로 변경할 것)
-                        auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
+                        auth().setPersistence(auth.Auth.Persistence.SESSION).then(() => {
                             const provider = new auth.EmailAuthProvider();
                             auth().onAuthStateChanged((user) => {
                                 if (user) {

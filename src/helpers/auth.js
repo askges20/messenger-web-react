@@ -11,10 +11,15 @@ export function signIn(email, password) {
 }
 
 //로그아웃
-export function userSignOut() {
-    return auth().signOut().then(() => {
-        
-    }).catch((error) => {
-
-    });
+export async function userSignOut() {
+    try {
+        await auth().signOut();
+    } catch (error) { }
 }
+// export function userSignOut() {
+//     return auth().signOut().then(() => {
+        
+//     }).catch((error) => {
+
+//     });
+// }

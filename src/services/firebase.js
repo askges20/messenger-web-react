@@ -1,8 +1,8 @@
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-import 'firebase/auth';
-// import 'firebase/database';
-// import withFirebaseAuth from 'react-with-firebase-auth'
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
+import 'firebase/compat/auth';
+// import { getAuth } from 'firebase/auth'; //ver 9
+import { getDatabase } from 'firebase/database';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCwYlqExgXkEafaw52XkxlLP-lwmdfU7a8",
@@ -18,14 +18,14 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const firestore = firebase.firestore();  //firestore DB 연결
-const auth = firebase.auth;
-const providers = {
-  googleProvider: new firebase.auth.GoogleAuthProvider(),
-};
 
+//firebase ver 9
+// const auth = getAuth();
+const database = getDatabase();
+
+// firebase ver 8
+const auth = firebase.auth;
 // const database = firebase.database();
 
 
-export {firestore, auth};
-// export {firestore, auth, database};
-// export default withFirebaseAuth({firestore, auth, providers});
+export {firestore, auth, database};
