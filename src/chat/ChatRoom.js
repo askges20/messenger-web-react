@@ -7,6 +7,7 @@ import SendChatMessage from './SendChatMessage';
 import ReceiveChatMessage from './ReceiveChatMessage';
 
 import { firestore } from '../services/firebase';
+import { addChatMessage } from '../helpers/database';
 import { useSelector } from 'react-redux';
 
 const ChatRoom = (props) => {
@@ -52,8 +53,12 @@ const ChatRoom = (props) => {
         return moment().format('YYYYMMDD');
     }
 
-    function getTime() {
-        return moment().format('HH:mm:ss');
+    function getTime1() {
+        return moment().format('HHmmss');
+    }
+
+    function getTime2() {
+        return moment().format('HH:mm');
     }
 
     function sendMessage() {
@@ -63,14 +68,10 @@ const ChatRoom = (props) => {
             alert('채팅 내용을 입력해주세요');
         } else {
             const date = getDate(); //채팅 내역 document에 사용
-            const time = getTime(); //채팅 내역 메세지 field에 사용
-            const messageCode = time + loginId;
+            const messageCode = getTime1() + loginId;
+            const sendTime = getTime2();
 
-            firestore.collection('chatRooms').doc(chatRoomNum).collection('chatMessages')
-            .doc(date).collection('userMessage').doc(messageCode).set({content: value, time: time.slice(0, -3), senderId: loginId}).then(
-                //전송 완료 (DB 등록)
-            );
-
+            addChatMessage(chatRoomNum, date, messageCode, content.current.value, loginId, sendTime);
             content.current.value = ''; //채팅 input 박스 비우기
         }
     }
