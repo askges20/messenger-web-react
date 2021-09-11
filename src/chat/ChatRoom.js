@@ -7,8 +7,9 @@ import SendChatMessage from './SendChatMessage';
 import ReceiveChatMessage from './ReceiveChatMessage';
 
 import { firestore } from '../services/firebase';
-import { addChatMessage } from '../helpers/database';
+import { addChatMessage, getChatHistory } from '../helpers/database';
 import { useSelector } from 'react-redux';
+import { onValue } from '@firebase/database';
 
 const ChatRoom = (props) => {
     const loginId = useSelector(state => state.user.id);
@@ -16,50 +17,22 @@ const ChatRoom = (props) => {
     const content = React.useRef(); //채팅 input 박스
 
     const [chatHistory, setChatHistory] = React.useState([]);   //채팅 기록을 상태로 관리
-    const chatMessageFB = firestore.collection('chatRooms').doc(chatRoomNum).collection('chatMessages');
+    const chatHistoryRef = getChatHistory(chatRoomNum);
 
     useEffect(() => {
-        chatMessageFB.doc('20210909').collection('userMessage').onSnapshot((docs) => {
-            let chatFromFB = [];
-            console.log(docs)
-            docs.forEach((doc) => {
-                chatFromFB.push({
-                    senderId: doc.data().senderId,
-                    content: doc.data().content,
-                    time: doc.data().time
+        onValue(chatHistoryRef, (snapshot) => {
+            let chatFromFB = []
+            snapshot.forEach((chatDate) => {
+                chatDate.forEach((chat) => {
+                    const content = chat.val().content;
+                    const senderId = chat.val().senderId;
+                    const time = chat.val().time;
+                    chatFromFB.push({content, senderId, time});
                 })
             })
             setChatHistory(chatFromFB);
         });
-
-        // chatMessageFB.get().then((docs) => {
-        //     let chatFromFB = [];
-        //     docs.forEach((doc) => {
-        //         console.log("?");
-        //         doc.ref.collection('userMessage').get().then((message) => {
-        //             chatFromFB.push({
-        //                 senderId: message.data().senderId,
-        //                 content: message.data().content,
-        //                 time: message.data().time
-        //             })
-        //         })
-        //         setChatHistory(chatFromFB);
-        //     })
-        //     console.log(chatFromFB);
-        // })
     }, []);
-
-    function getDate() {
-        return moment().format('YYYYMMDD');
-    }
-
-    function getTime1() {
-        return moment().format('HHmmss');
-    }
-
-    function getTime2() {
-        return moment().format('HH:mm');
-    }
 
     function sendMessage() {
         const value = content.current.value;
@@ -67,9 +40,9 @@ const ChatRoom = (props) => {
         if (value.length == 0) {
             alert('채팅 내용을 입력해주세요');
         } else {
-            const date = getDate(); //채팅 내역 document에 사용
-            const messageCode = getTime1() + loginId;
-            const sendTime = getTime2();
+            const date = moment().format('YYYYMMDD'); //채팅 내역 document에 사용
+            const messageCode = moment().format('HHmmss') + loginId;
+            const sendTime = moment().format('HH:mm');
 
             addChatMessage(chatRoomNum, date, messageCode, content.current.value, loginId, sendTime);
             content.current.value = ''; //채팅 input 박스 비우기

@@ -16,6 +16,7 @@ const MessageContainer = styled.div`
     align-items: flex-end;
     flex-direction: column;
     min-height: 50px;
+    margin-bottom: 20px;
 `;
 
 const ChatTime = styled.div`

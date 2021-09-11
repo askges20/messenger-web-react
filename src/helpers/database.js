@@ -15,3 +15,7 @@ export function addChatMessage(chatRoomNum, date, messageCode, content, id, send
         time: sendTime
     });
 }
+
+export function getChatHistory(chatRoomNum) {
+    return ref(database, '/ChatRooms/' + chatRoomNum + '/ChatMessages/');
+}
