@@ -23,6 +23,7 @@ const MessageContainer = styled.div`
 const ChatTime = styled.div`
     margin-right: 10px;
     color: gray;
+    font-size: 0.8em;
 `;
 
 const ChatBox = styled.div`

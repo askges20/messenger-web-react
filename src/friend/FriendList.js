@@ -21,15 +21,6 @@ const FriendList = (props) => {
                 listFromFB.push({id: doc.data().id, name: doc.data().name, chatRoomNum: doc.data().chatRoomNum});
             });
             setFriends(listFromFB);
-
-            // docs.forEach((doc) => {
-            //     usersFB.doc(doc.id).get().then((doc) => {
-            //         const name = doc.data().name;
-            //         listFromFB.push({email: doc.id, id: doc.data().id, name: name});
-            //         console.log(name, listFromFB);
-            //         setFriends(listFromFB);
-            //     });
-            // });
     })}, []);
 
     return (
@@ -39,7 +30,8 @@ const FriendList = (props) => {
                 friends.map((value, i) => {
                     return (
                         <div className="btn10" key={i} onClick={() => {
-                            window.open('/chatroom/' + value.name + '/' + value.chatRoomNum, '', '_blank', 'resizable=no');
+                            //resizable=no 는 IE에서만 작동된다고 함, 팝업을 띄우는 다른 방법을 찾아봐야함
+                            window.open('/chatroom/' + value.name + '/' + value.chatRoomNum, '', '_blank');
                         }}>
                             <span>{value.name}</span>
                             <div className="transition"></div>

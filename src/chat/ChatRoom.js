@@ -2,6 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 import moment from 'moment';
 import 'moment/locale/ko';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 import ChatDateLine from './ChatDateLine';
 import SendChatMessage from './SendChatMessage';
@@ -11,7 +12,6 @@ import { addChatMessage, getChatHistory } from '../helpers/database';
 import { connect } from 'react-redux';
 import { onValue } from '@firebase/database';
 
-let isLoaded = 0;
 const content = React.createRef(); //채팅 input 박스
 const chatContentBox = React.createRef();
 
@@ -21,18 +21,25 @@ const mapStateToProps = (state) => ({
 
 class ChatRoom extends React.Component {
 
-    sendMessage = (loginId) => {
+    sendMessage = () => {
         const value = content.current.value;
     
         if (value.length == 0) {
-            alert('채팅 내용을 입력해주세요');
+            // alert('채팅 내용을 입력해주세요');
         } else {
             const date = moment().format('YYYYMMDD'); //채팅 내역 document에 사용
-            const messageCode = moment().format('HHmmss') + loginId;
+            const messageCode = moment().format('HHmmss') + this.props.loginId;
             const sendTime = moment().format('HH:mm');
 
-            addChatMessage(this.chatRoomNum, date, messageCode, content.current.value, loginId, sendTime);
+            addChatMessage(this.chatRoomNum, date, messageCode, content.current.value, this.props.loginId, sendTime);
             content.current.value = ''; //채팅 input 박스 비우기
+            content.current.focus();    //focus 주기
+        }
+    }
+
+    handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            this.sendMessage(this.props.loginId);
         }
     }
 
@@ -70,13 +77,8 @@ class ChatRoom extends React.Component {
     }
 
     componentDidUpdate() {
-        if (isLoaded >= 3) {
-            chatContentBox.current.scrollBy({top: chatContentBox.current.scrollHeight, behavior: 'smooth'});
-        } else {    //첫 로딩은 smooth 없이
-            chatContentBox.current.scrollBy({top: chatContentBox.current.scrollHeight});
-        }
-        isLoaded += 1;
-        console.log(isLoaded);
+        content.current.focus();
+        chatContentBox.current.scrollToBottom();    //채팅 가장 아래로 자동 스크롤
     }
 
     render () {
@@ -85,7 +87,29 @@ class ChatRoom extends React.Component {
             <ChatBox>
                 <ChatTopBar>{this.friendName}</ChatTopBar>
 
-                <ChatContent ref={chatContentBox}>
+                <Scrollbars ref={chatContentBox}
+                    autoHide
+                    autoHideTimeout = {2000}
+                    autoHideDuration = {500}
+                    renderView={props => (
+                        <div {...props}
+                        style = {{
+                            ...props.style,
+                            overflowX: 'hidden'
+                        }}/>
+                    )}
+                    renderTrackHorizontal={props =>
+                        <div {...props}
+                        style = {{
+                            display: 'none'
+                        }}/>
+                    }
+                    style={{
+                        position: 'absolute',
+                        top: '50px',
+                        width: '100%',
+                        height: 'calc(100% - 100px)',
+                    }}>
                     {
                         this.state.chatHistory.map((value, i) => {
                             if (!value.senderId){
@@ -103,11 +127,11 @@ class ChatRoom extends React.Component {
                             }
                         })
                     }
-                </ChatContent>
+                </Scrollbars>
 
-                <ChatInput ref={content}></ChatInput>
+                <ChatInput ref={content} onKeyPress={this.handleKeyPress}></ChatInput>
                 <ChatInputBtn onClick={() => {
-                    this.sendMessage(this.props.loginId);
+                    this.sendMessage();
                 }}>전송</ChatInputBtn>
             </ChatBox>
             </ChatRoomConatiner>
@@ -149,34 +173,28 @@ const ChatTopBar = styled.div`
     font-weight: 700;
 `;
 
-const ChatContent = styled.div`
-    position: absolute;
-    top: 50px;
-    width: 100%;
-    height: calc(100% - 100px);
-    overflow-x: hidden;
-    overflow-y: scroll;
-`;
-
 const ChatInput = styled.input`
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 90%;
+    width: calc(100% - 50px);
     height: 50px;
-    padding: 0 10px;
-    background-color: lightgray;
+    padding: 0 20px;
+    background-color: #EAEAEA;
     border: 0px solid pink;
     &:focus {
         outline: none;
     }
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
 `;
 
 const ChatInputBtn = styled.button`
     position: absolute;
     bottom: 0;
     right: 0;
-    width: 10%;
+    width: 100px;
     height: 50px;
     background-color: #dadafc;
     border: 1px solid #dadafc;
