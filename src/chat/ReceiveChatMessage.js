@@ -17,6 +17,7 @@ const MessageContainer = styled.div`
     flex-direction: column;
     min-height: 50px;
     margin-bottom: 20px;
+    margin-left: 10px;
 `;
 
 const FriendName = styled.div`
@@ -37,6 +38,8 @@ const ChatBox = styled.div`
     border-radius: 10px;
     padding: 10px;
     margin: 5px 10px;
+    line-height: 1.3em;
+    text-align: left;
 
     display: inline-block;
     flex: none;

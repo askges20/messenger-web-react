@@ -1,42 +1,29 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from "styled-components";
 import moment from 'moment';
 import 'moment/locale/ko';
 
+import ChatDateLine from './ChatDateLine';
 import SendChatMessage from './SendChatMessage';
 import ReceiveChatMessage from './ReceiveChatMessage';
 
-import { firestore } from '../services/firebase';
 import { addChatMessage, getChatHistory } from '../helpers/database';
-import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { onValue } from '@firebase/database';
 
-const ChatRoom = (props) => {
-    const loginId = useSelector(state => state.user.id);
-    const chatRoomNum = props.match.params.chat_room_num;
-    const content = React.useRef(); //채팅 input 박스
+let isLoaded = 0;
+const content = React.createRef(); //채팅 input 박스
+const chatContentBox = React.createRef();
 
-    const [chatHistory, setChatHistory] = React.useState([]);   //채팅 기록을 상태로 관리
-    const chatHistoryRef = getChatHistory(chatRoomNum);
+const mapStateToProps = (state) => ({
+    loginId: state.user.id
+})
 
-    useEffect(() => {
-        onValue(chatHistoryRef, (snapshot) => {
-            let chatFromFB = []
-            snapshot.forEach((chatDate) => {
-                chatDate.forEach((chat) => {
-                    const content = chat.val().content;
-                    const senderId = chat.val().senderId;
-                    const time = chat.val().time;
-                    chatFromFB.push({content, senderId, time});
-                })
-            })
-            setChatHistory(chatFromFB);
-        });
-    }, []);
+class ChatRoom extends React.Component {
 
-    function sendMessage() {
+    sendMessage = (loginId) => {
         const value = content.current.value;
-
+    
         if (value.length == 0) {
             alert('채팅 내용을 입력해주세요');
         } else {
@@ -44,39 +31,88 @@ const ChatRoom = (props) => {
             const messageCode = moment().format('HHmmss') + loginId;
             const sendTime = moment().format('HH:mm');
 
-            addChatMessage(chatRoomNum, date, messageCode, content.current.value, loginId, sendTime);
+            addChatMessage(this.chatRoomNum, date, messageCode, content.current.value, loginId, sendTime);
             content.current.value = ''; //채팅 input 박스 비우기
         }
     }
 
-    return(
-        <ChatRoomConatiner>
-        <ChatBox>
-            <ChatTopBar>{props.match.params.friend_name}</ChatTopBar>
+    constructor(props) {
+        super(props);
+        this.chatRoomNum = props.match.params.chat_room_num;
+        this.friendName = props.match.params.friend_name;
 
-            <ChatContent>
-                {
-                    chatHistory.map((value, i) => {
-                        if (value.senderId == loginId){
-                            return (
-                                <SendChatMessage key={i} content={value.content} time={value.time}/>
-                            );
-                        } else {
-                            return (
-                                <ReceiveChatMessage key={i} content={value.content} time={value.time} friendName={props.match.params.friend_name}/>
-                            );
-                        }
-                    })
-                }
-            </ChatContent>
+        this.chatHistoryRef = getChatHistory(this.chatRoomNum); //DB ref 가져오기
 
-            <ChatInput ref={content}></ChatInput>
-            <ChatInputBtn onClick={() => {
-                sendMessage();
-            }}>전송</ChatInputBtn>
-        </ChatBox>
-        </ChatRoomConatiner>
-    )
+        this.state = {
+            chatHistory: [] //채팅 기록을 상태로 관리
+        }
+
+        onValue(this.chatHistoryRef, (snapshot) => {
+            let chatFromFB = []
+            snapshot.forEach((chatDate) => {
+                const year = chatDate.key.slice(0, 4)
+                const month = chatDate.key.slice(4, 6).trimLeft();
+                const date = chatDate.key.slice(6, 8).trimLeft();
+                chatFromFB.push({year, month, date});
+
+                chatDate.forEach((chat) => {    // 각 채팅 데이터
+                    const content = chat.val().content;
+                    const senderId = chat.val().senderId;
+                    const time = chat.val().time;
+                    chatFromFB.push({content, senderId, time});
+                })
+            })
+
+            this.setState(() => {
+                return {chatHistory: chatFromFB}
+            })
+        });
+    }
+
+    componentDidUpdate() {
+        if (isLoaded >= 3) {
+            chatContentBox.current.scrollBy({top: chatContentBox.current.scrollHeight, behavior: 'smooth'});
+        } else {    //첫 로딩은 smooth 없이
+            chatContentBox.current.scrollBy({top: chatContentBox.current.scrollHeight});
+        }
+        isLoaded += 1;
+        console.log(isLoaded);
+    }
+
+    render () {
+        return (
+            <ChatRoomConatiner>
+            <ChatBox>
+                <ChatTopBar>{this.friendName}</ChatTopBar>
+
+                <ChatContent ref={chatContentBox}>
+                    {
+                        this.state.chatHistory.map((value, i) => {
+                            if (!value.senderId){
+                                return (
+                                    <ChatDateLine key={i} year={value.year} month={value.month} date={value.date}/>
+                                )
+                            } else if (value.senderId == this.props.loginId){
+                                return (
+                                    <SendChatMessage key={i} content={value.content} time={value.time}/>
+                                );
+                            } else {
+                                return (
+                                    <ReceiveChatMessage key={i} content={value.content} time={value.time} friendName={this.friendName}/>
+                                );
+                            }
+                        })
+                    }
+                </ChatContent>
+
+                <ChatInput ref={content}></ChatInput>
+                <ChatInputBtn onClick={() => {
+                    this.sendMessage(this.props.loginId);
+                }}>전송</ChatInputBtn>
+            </ChatBox>
+            </ChatRoomConatiner>
+        );
+    }
 }
 
 const ChatRoomConatiner = styled.div`
@@ -116,9 +152,10 @@ const ChatTopBar = styled.div`
 const ChatContent = styled.div`
     position: absolute;
     top: 50px;
-    width: calc(100% - 20px);
+    width: 100%;
     height: calc(100% - 100px);
-    padding: 10px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 `;
 
 const ChatInput = styled.input`
@@ -146,4 +183,5 @@ const ChatInputBtn = styled.button`
     cursor: pointer;
 `;
 
-export default ChatRoom;
+// export default ChatRoom;
+export default connect(mapStateToProps)(ChatRoom);

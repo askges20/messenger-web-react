@@ -9,7 +9,7 @@ export function addChatMember(chatRoomNum, id, email) {
 }
 
 export function addChatMessage(chatRoomNum, date, messageCode, content, id, sendTime) {
-    set(ref(database, '/ChatRooms/' + chatRoomNum + '/ChatMessages/' + date + '/' + messageCode + '/'), {
+    return set(ref(database, '/ChatRooms/' + chatRoomNum + '/ChatMessages/' + date + '/' + messageCode + '/'), {
         content: content,
         senderId: id,
         time: sendTime
