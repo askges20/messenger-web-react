@@ -8,7 +8,7 @@ import ChatDateLine from './ChatDateLine';
 import SendChatMessage from './SendChatMessage';
 import ReceiveChatMessage from './ReceiveChatMessage';
 
-import { addChatMessage, getChatHistory } from '../helpers/database';
+import { addChatMessage, updateLastMessage, getChatHistory } from '../helpers/database';
 import { connect } from 'react-redux';
 import { onValue } from '@firebase/database';
 
@@ -24,17 +24,22 @@ class ChatRoom extends React.Component {
     sendMessage = () => {
         const value = content.current.value;
     
-        if (value.length == 0) {
-            // alert('채팅 내용을 입력해주세요');
-        } else {
-            const date = moment().format('YYYYMMDD'); //채팅 내역 document에 사용
-            const messageCode = moment().format('HHmmss') + this.props.loginId;
-            const sendTime = moment().format('HH:mm');
-
-            addChatMessage(this.chatRoomNum, date, messageCode, content.current.value, this.props.loginId, sendTime);
-            content.current.value = ''; //채팅 input 박스 비우기
+        if (value.length == 0) {    //채팅을 입력하지 않았을 때
             content.current.focus();    //focus 주기
+            return; //전송하지 않음
         }
+
+        const date = moment().format('YYYYMMDD'); //채팅 내역 document에 사용
+        const messageCode = moment().format('HHmmss') + this.props.loginId;
+        const sendTime = moment().format('HH:mm');
+
+        //해당 채팅방의 채팅 내역에 추가
+        addChatMessage(this.chatRoomNum, date, messageCode, content.current.value, this.props.loginId, sendTime);
+        //해당 채팅방의 마지막 메세지 추가 (채팅방 목록 정렬 시 사용)
+        updateLastMessage(this.chatRoomNum, content.current.value, this.props.loginId, date, sendTime);
+
+        content.current.value = ''; //채팅 input 박스 비우기
+        content.current.focus();    //focus 주기
     }
 
     handleKeyPress = (e) => {
