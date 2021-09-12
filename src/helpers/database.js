@@ -2,8 +2,14 @@ import { database } from '../services/firebase';
 import { ref, set } from 'firebase/database';
 
 export function addChatMember(chatRoomNum, id, email) {
+    //채팅방의 멤버로 등록
     set(ref(database, '/ChatRooms/' + chatRoomNum + '/ChatMembers/' + id + '/'), {
         email: email,
+        isMember: true
+    });
+
+    //자신이 속한 채팅방 목록에 추가
+    set(ref(database, '/MyChatRooms/' + id + '/' + chatRoomNum + '/'), {
         isMember: true
     });
 }
