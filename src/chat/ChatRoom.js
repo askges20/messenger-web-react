@@ -51,7 +51,8 @@ class ChatRoom extends React.Component {
         this.chatHistoryRef = getChatHistory(this.chatRoomNum); //DB ref 가져오기
 
         this.state = {
-            chatHistory: [] //채팅 기록을 상태로 관리
+            chatHistory: [], //채팅 기록을 상태로 관리
+            loadCnt: 0
         }
 
         onValue(this.chatHistoryRef, (snapshot) => {
@@ -77,8 +78,25 @@ class ChatRoom extends React.Component {
     }
 
     componentDidUpdate() {
+        this.state.loadCnt += 1;
+        console.log(this.state.loadCnt);
         content.current.focus();
-        chatContentBox.current.scrollToBottom();    //채팅 가장 아래로 자동 스크롤
+
+        if (this.state.loadCnt == 3) {  //채팅방 입장 시 가장 아래로 스크롤
+            chatContentBox.current.scrollToBottom();
+            return;
+        }
+
+        const chatCnt = this.state.chatHistory.length;  //누적 채팅 개수
+        if (chatCnt == 0){  //채팅 기록이 없거나 아직 채팅 내역을 불러오지 않은 상태
+            return;
+        }
+        
+        const lastSenderId = this.state.chatHistory[chatCnt - 1].senderId;
+        console.log(lastSenderId);
+        if (lastSenderId == this.props.loginId){    //채팅을 전송하면
+            chatContentBox.current.scrollToBottom();    //채팅 가장 아래로 자동 스크롤
+        }
     }
 
     render () {
