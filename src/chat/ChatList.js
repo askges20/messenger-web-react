@@ -1,10 +1,51 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from "styled-components";
 import { Scrollbars } from 'react-custom-scrollbars';
 
 import ChatPreview from './ChatPreview';
 
+import { findLastMessage, getMyChatRoomRef } from '../helpers/database';
+
+import { useSelector } from 'react-redux';
+import { onValue } from '@firebase/database';
+
 const ChatList = (props) => {
+    const [myChatRooms, setMyChatRooms] = React.useState([]);
+    const [lastMessages, setLastMessages] = React.useState([]);
+    const loginUserId = useSelector(state => state.user.id);
+    const myChatRoomRef = getMyChatRoomRef(loginUserId);
+
+    const findMyChatRooms = () => {
+        onValue(myChatRoomRef, (snapshot) => {
+            let chatRoomFromFB = [];
+            let lastMessageFromFB = [];
+            snapshot.forEach((chatRoomNum) => {
+                chatRoomFromFB.push(chatRoomNum.key);
+                const chatRoomLastMessage = findLastMessage(chatRoomNum.key);
+                onValue(chatRoomLastMessage, (lastMessage) => {
+                    console.log(lastMessage.val().content);
+                    console.log(lastMessage.val().dateTime);
+                    console.log(lastMessage.val().senderId);
+
+                    const content = lastMessage.val().content;
+                    const dateTime = lastMessage.val().dateTime;
+                    const senderId = lastMessage.val().senderId;
+                    // const senderId = chatRoomNum.key;
+
+                    lastMessageFromFB.push({content, dateTime, senderId});
+                    // {채팅방 번호 : {content, dateTime, senderId}} 로 해서 update 할 수 있도록
+
+                    setLastMessages(lastMessageFromFB);
+                })
+            });
+            setMyChatRooms(chatRoomFromFB); //상태
+        })
+    }
+
+    useEffect(() => {
+        findMyChatRooms();
+    }, []);
+
     return(
         <ChatMainConatiner>
             <Scrollbars
@@ -30,16 +71,12 @@ const ChatList = (props) => {
                     backgroundColor: 'white',
                 }}>
                 <ChatListTitle>채팅 목록</ChatListTitle>
-                <ChatPreview/>
-                <ChatPreview/>
-                <ChatPreview/>
-                <ChatPreview/>
-                <ChatPreview/>
-                <ChatPreview/>
-                <ChatPreview/>
-                <ChatPreview/>
-                <ChatPreview/>
-                <ChatPreview/>
+                {
+                    lastMessages.map((value, i) => {
+                        console.log('렌더링')
+                        return(<ChatPreview content={value.content} dateTime={value.dateTime} senderId={value.senderId} key={i}/>);
+                    })
+                }
             </Scrollbars>
         </ChatMainConatiner>
     )

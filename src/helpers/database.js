@@ -33,3 +33,11 @@ export function updateLastMessage(chatRoomNum, content, id, date, sendTime) {
 export function getChatHistory(chatRoomNum) {
     return ref(database, '/ChatRooms/' + chatRoomNum + '/ChatMessages/');
 }
+
+export function getMyChatRoomRef(id) {
+    return ref(database, '/MyChatRooms/' + id + '/');
+}
+
+export function findLastMessage(chatRoomNum) {
+    return ref(database, '/ChatRooms/' + chatRoomNum + '/LastMessage/');
+}
