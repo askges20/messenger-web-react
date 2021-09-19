@@ -3,7 +3,8 @@ import styled from "styled-components";
 
 import FriendProfile from './FriendProfile';
 
-import { Formik } from 'formik';
+import { TextField } from '@material-ui/core';
+import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 import { useHistory } from 'react-router-dom';
@@ -36,12 +37,13 @@ const FindFriends = (props) => {
                 >
                 {formik => (
                     <form onSubmit={formik.handleSubmit}>
-                        <Input id="id" type="text" placeholder="아이디"
+                        <TextField label="아이디" name="id" id="id" type="text" style={{margin: '15px'}}
                             {...formik.getFieldProps('id')}
                         />
-                        {formik.touched.id && formik.errors.id ? (
-                            <div>{formik.errors.id}</div>
-                        ) : null}
+                        <br/>
+                        <ErrorMessage name="id">
+                            { msg => <div style={{ color: '#6B66FF' }}>{msg}</div> }
+                        </ErrorMessage>
                         <br/>
                         <FindFriendBtn className="defaultBtn" type="submit">친구 찾기</FindFriendBtn>
                     </form>
@@ -65,10 +67,6 @@ const FindFriendsConatiner = styled.div`
     justify-content: center;
     align-items: center;
     background-color: #D9E5FF;
-`;
-
-const Input = styled.input`
-    margin:10px;
 `;
 
 const FindFriendBtn = styled.button`

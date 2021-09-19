@@ -6,7 +6,7 @@ import { signUp } from '../helpers/auth';
 import '../css/input.css';
 
 import { TextField } from '@material-ui/core';
-import { Formik } from 'formik';
+import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 import { useHistory } from 'react-router-dom';
@@ -31,6 +31,7 @@ const SignUp = (props) => {
                     email: Yup.string().email('유효한 이메일 형식이 아닙니다.')
                     .required('이메일을 작성해주세요.'),
                     id: Yup.string()
+                    .min(5, '아이디는 최소 5글자 이상 작성해주세요.')
                     .max(15, '아이디는 15글자 이하로 작성해주세요.')
                     .required('아이디를 작성해주세요.'),
                     password: Yup.string()
@@ -49,39 +50,43 @@ const SignUp = (props) => {
                 >
                 {formik => (
                     <form onSubmit={formik.handleSubmit}>
-                        <TextField label="이름" id="name" type="text" variant="outlined"
+                        <TextField label="이름" name="name" id="name" type="text" variant="outlined"
                             style={{margin: '10px', backgroundColor: 'white'}}
                             {...formik.getFieldProps('name')}
                         />
-                        {formik.touched.name && formik.errors.name ? (
-                            <div>{formik.errors.name}</div>
-                        ) : null}
+                        <br/>
+                        <ErrorMessage name="name">
+                            { msg => <div style={{ color: '#6B66FF' }}>{msg}</div> }
+                        </ErrorMessage>
                         <br/>
                         
-                        <TextField label="이메일" id="email" type="email" variant="outlined"
+                        <TextField label="이메일" name="email" id="email" type="email" variant="outlined"
                             style={{margin: '10px', backgroundColor: 'white'}}
                             {...formik.getFieldProps('email')} />
-                        {formik.touched.email && formik.errors.email ? (
-                            <div>{formik.errors.email}</div>
-                        ) : null}
+                        <br/>
+                        <ErrorMessage name="email">
+                            { msg => <div style={{ color: '#6B66FF' }}>{msg}</div> }
+                        </ErrorMessage>
                         <br/>
 
-                        <TextField label="아이디" id="id" type="text" variant="outlined"
+                        <TextField label="아이디" name="id" id="id" type="text" variant="outlined"
                             style={{margin: '10px', backgroundColor: 'white'}}
                             {...formik.getFieldProps('id')}
                         />
-                        {formik.touched.id && formik.errors.id ? (
-                            <div>{formik.errors.id}</div>
-                        ) : null}
+                        <br/>
+                        <ErrorMessage name="id">
+                            { msg => <div style={{ color: '#6B66FF' }}>{msg}</div> }
+                        </ErrorMessage>
                         <br/>
 
-                        <TextField label="비밀번호" id="password" type="password" variant="outlined"
+                        <TextField label="비밀번호" name="password" id="password" type="password" variant="outlined"
                             style={{margin: '10px', backgroundColor: 'white'}}
                             {...formik.getFieldProps('password')}
                         />
-                        {formik.touched.password && formik.errors.password ? (
-                            <div>{formik.errors.password}</div>
-                        ) : null}
+                        <br/>
+                        <ErrorMessage name="password">
+                            { msg => <div style={{ color: '#6B66FF' }}>{msg}</div> }
+                        </ErrorMessage>
                         <br/>
 
                         <SignUpBtn type="submit">가입하기</SignUpBtn>

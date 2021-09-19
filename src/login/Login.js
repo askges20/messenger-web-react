@@ -6,7 +6,7 @@ import { auth } from '../services/firebase';
 import '../css/input.css';
 
 import { TextField } from '@material-ui/core';
-import { Formik } from 'formik';
+import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 import { useHistory } from 'react-router-dom';
@@ -63,22 +63,22 @@ const Login = (props) => {
                 >
                 {formik => (
                     <form onSubmit={formik.handleSubmit}>                        
-                        <TextField label="이메일" id="email" type="email"
+                        <TextField label="이메일" name="email" id="email" type="email"
                             style={{margin: '10px'}}
                             {...formik.getFieldProps('email')} />
-                        {formik.touched.email && formik.errors.email ? (
-                            <div>{formik.errors.email}</div>
-                        ) : null}
                         <br/>
+                        <ErrorMessage name="email">
+                            { msg => <div style={{ color: '#6B66FF' }}>{msg}</div> }
+                        </ErrorMessage>
 
-                        <TextField label="비밀번호" id="password" type="password"
+                        <TextField label="비밀번호" name="password" id="password" type="password"
                             style={{margin: '10px'}}
                             {...formik.getFieldProps('password')}
                         />
-                        {formik.touched.password && formik.errors.password ? (
-                            <div>{formik.errors.password}</div>
-                        ) : null}
                         <br/>
+                        <ErrorMessage name="password">
+                            { msg => <div style={{ color: '#6B66FF' }}>{msg}</div> }
+                        </ErrorMessage>
 
                         <SignInBtn type="submit">로그인</SignInBtn>
                     </form>
@@ -112,7 +112,7 @@ const SignInBtn = styled.button`
     border-radius: 30px;
     border: 1px solid #dadafc;
     width: 200px;
-    margin: 10px 20px;
+    margin: 30px 20px;
     cursor: pointer;
 `;
 
