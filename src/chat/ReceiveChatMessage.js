@@ -6,7 +6,7 @@ const ReceiveChatMessage = (props) => {
         <MessageContainer>
             <FriendName>{props.friendName}</FriendName>
             <ChatBox>{props.content}</ChatBox>
-            <ChatTime>{props.time}</ChatTime>
+            <ChatTime>{props.time.slice(0, 5)}</ChatTime>
         </MessageContainer>
     );
 }

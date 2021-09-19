@@ -5,6 +5,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import ChatPreview from './ChatPreview';
 
 import { findLastMessage, getMyChatRoomRef } from '../helpers/database';
+import { sortChatRoom } from '../helpers/sort';
 
 import { connect } from 'react-redux';
 import { onValue } from '@firebase/database';
@@ -53,6 +54,8 @@ class ChatList extends React.Component {
                 if (!flag) {    //새로운 채팅방이면 push
                     lastMessageFromFB.push({chatRoomNum, content, dateTime, senderId});
                 }
+
+                lastMessageFromFB.sort((a, b) => { return sortChatRoom(a, b)})
 
                 //마지막 메세지들을 상태로 가짐
                 this.setState(() => {

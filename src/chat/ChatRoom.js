@@ -31,7 +31,7 @@ class ChatRoom extends React.Component {
 
         const date = moment().format('YYYYMMDD'); //채팅 내역 document에 사용
         const messageCode = moment().format('HHmmss') + this.props.loginId;
-        const sendTime = moment().format('HH:mm');
+        const sendTime = moment().format('HH:mm:ss');
 
         //해당 채팅방의 채팅 내역에 추가
         addChatMessage(this.chatRoomNum, date, messageCode, content.current.value, this.props.loginId, sendTime);

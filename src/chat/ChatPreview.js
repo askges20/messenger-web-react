@@ -69,7 +69,7 @@ const ChatPreviewConatiner = styled.div`
 `;
 
 const ChatPreviewDiv1 = styled.div`
-    width: 100%;
+    width: calc(100% - 120px);
 `;
 
 const FriendName = styled.div`
@@ -80,10 +80,10 @@ const FriendName = styled.div`
 
 const ChatContent = styled.div`
     text-align: left;
+    display: block;
+    overflow: hidden;
     text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    white-space: nowrap;
 `;
 
 const ChatPreviewDiv2 = styled.div`

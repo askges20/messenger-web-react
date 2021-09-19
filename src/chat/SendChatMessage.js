@@ -5,7 +5,7 @@ const SendChatMessage = (props) => {
     return(
         <MessageContainer>
             <ChatBox>{props.content}</ChatBox>
-            <ChatTime>{props.time}</ChatTime>
+            <ChatTime>{props.time.slice(0, 5)}</ChatTime>
         </MessageContainer>
         
     );
