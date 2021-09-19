@@ -16,7 +16,7 @@ const ChatPreview = (props) => {
     return(
         <ChatPreviewConatiner>
             <ChatPreviewDiv1>
-                {/* 채팅방 이름 필요 */}
+                <p>{props.chatRoomNum}</p>
                 <FriendName>{props.senderId}</FriendName>
                 <ChatContent>{props.content}</ChatContent>
             </ChatPreviewDiv1>

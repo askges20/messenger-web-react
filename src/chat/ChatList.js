@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from "styled-components";
 import { Scrollbars } from 'react-custom-scrollbars';
 
@@ -6,80 +6,110 @@ import ChatPreview from './ChatPreview';
 
 import { findLastMessage, getMyChatRoomRef } from '../helpers/database';
 
-import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { onValue } from '@firebase/database';
 
-const ChatList = (props) => {
-    const [myChatRooms, setMyChatRooms] = React.useState([]);
-    const [lastMessages, setLastMessages] = React.useState([]);
-    const loginUserId = useSelector(state => state.user.id);
-    const myChatRoomRef = getMyChatRoomRef(loginUserId);
+const mapStateToProps = (state) => ({
+    loginUserId: state.user.id
+})
 
-    const findMyChatRooms = () => {
-        onValue(myChatRoomRef, (snapshot) => {
+class ChatList extends React.Component {
+
+    // 사용자가 속한 채팅방 번호 구하기
+    findMyChatRooms = () => {
+        onValue(this.myChatRoomRef, (snapshot) => {
             let chatRoomFromFB = [];
-            let lastMessageFromFB = [];
-            snapshot.forEach((chatRoomNum) => {
-                chatRoomFromFB.push(chatRoomNum.key);
-                const chatRoomLastMessage = findLastMessage(chatRoomNum.key);
-                onValue(chatRoomLastMessage, (lastMessage) => {
-                    console.log(lastMessage.val().content);
-                    console.log(lastMessage.val().dateTime);
-                    console.log(lastMessage.val().senderId);
-
-                    const content = lastMessage.val().content;
-                    const dateTime = lastMessage.val().dateTime;
-                    const senderId = lastMessage.val().senderId;
-                    // const senderId = chatRoomNum.key;
-
-                    lastMessageFromFB.push({content, dateTime, senderId});
-                    // {채팅방 번호 : {content, dateTime, senderId}} 로 해서 update 할 수 있도록
-
-                    setLastMessages(lastMessageFromFB);
-                })
+            snapshot.forEach((chatRoom) => {
+                const chatRoomNum = chatRoom.key;
+                chatRoomFromFB.push(chatRoomNum);
             });
-            setMyChatRooms(chatRoomFromFB); //상태
+
+            this.setState(() => {
+                return {myChatRooms: chatRoomFromFB};
+            })
+
+            this.findChatRoomMessages(chatRoomFromFB);
         })
     }
 
-    useEffect(() => {
-        findMyChatRooms();
-    }, []);
+    // 각 채팅방의 가장 마지막 메세지 구하기
+    findChatRoomMessages = (chatRooms) => {
+        let lastMessageFromFB = [];
+        chatRooms.forEach((chatRoom) => {
+            const chatRoomLastMessage = findLastMessage(chatRoom);  //Firebase DB ref 찾기
+            onValue(chatRoomLastMessage, (lastMessage) => {
+                const chatRoomNum = chatRoom;
+                const content = lastMessage.val().content;
+                const dateTime = lastMessage.val().dateTime;
+                const senderId = lastMessage.val().senderId;
 
-    return(
-        <ChatMainConatiner>
-            <Scrollbars
-                autoHide
-                autoHideTimeout = {2000}
-                autoHideDuration = {500}
-                renderView={props => (
-                    <div {...props}
-                    style = {{
-                        ...props.style,
-                        overflowX: 'hidden'
-                    }}/>
-                )}
-                renderTrackHorizontal={props =>
-                    <div {...props}
-                    style = {{
-                        display: 'none'
-                    }}/>
+                let flag = false;
+                lastMessageFromFB.forEach((value, i) => {
+                    if (value.chatRoomNum === chatRoomNum){ //기존에 있던 채팅방이면 값을 업데이트
+                        lastMessageFromFB[i] = {chatRoomNum, content, dateTime, senderId};
+                        flag = true;
+                    }
+                })
+                if (!flag) {    //새로운 채팅방이면 push
+                    lastMessageFromFB.push({chatRoomNum, content, dateTime, senderId});
                 }
-                style={{
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: 'white',
-                }}>
-                <ChatListTitle>채팅 목록</ChatListTitle>
-                {
-                    lastMessages.map((value, i) => {
-                        console.log('렌더링')
-                        return(<ChatPreview content={value.content} dateTime={value.dateTime} senderId={value.senderId} key={i}/>);
-                    })
-                }
-            </Scrollbars>
-        </ChatMainConatiner>
-    )
+
+                //마지막 메세지들을 상태로 가짐
+                this.setState(() => {
+                    return {lastMessages: lastMessageFromFB};
+                })
+            })
+        });
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            myChatRooms: [],
+            lastMessages: [],
+        }
+        this.myChatRoomRef = getMyChatRoomRef(this.props.loginUserId);  //DB ref 가져오기
+    }
+
+    componentDidMount() {
+        this.findMyChatRooms(); //사용자가 속한 채팅방 목록 찾기
+    }
+
+    render() {
+        return(
+            <ChatMainConatiner>
+                <Scrollbars
+                    autoHide
+                    autoHideTimeout = {2000}
+                    autoHideDuration = {500}
+                    renderView={props => (
+                        <div {...props}
+                        style = {{
+                            ...props.style,
+                            overflowX: 'hidden'
+                        }}/>
+                    )}
+                    renderTrackHorizontal={props =>
+                        <div {...props}
+                        style = {{
+                            display: 'none'
+                        }}/>
+                    }
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'white',
+                    }}>
+                    <ChatListTitle>채팅 목록</ChatListTitle>
+                    {
+                        this.state.lastMessages.map((value, i) => {
+                            return(<ChatPreview chatRoomNum={value.chatRoomNum} content={value.content} dateTime={value.dateTime} senderId={value.senderId} key={i}/>);
+                        })
+                    }
+                </Scrollbars>
+            </ChatMainConatiner>
+        )
+    }
 };
 
 const ChatMainConatiner = styled.div`
@@ -101,4 +131,4 @@ const ChatListTitle = styled.h3`
     padding: 20px;
 `;
 
-export default ChatList;
+export default connect(mapStateToProps)(ChatList);
