@@ -103,7 +103,15 @@ class ChatList extends React.Component {
                     <ChatListTitle>채팅 목록</ChatListTitle>
                     {
                         this.state.lastMessages.map((value, i) => {
-                            return(<ChatPreview chatRoomNum={value.chatRoomNum} content={value.content} dateTime={value.dateTime} senderId={value.senderId} key={i}/>);
+                            return(
+                            <ChatPreview
+                                chatRoomNum={value.chatRoomNum}
+                                content={value.content}
+                                dateTime={value.dateTime}
+                                senderId={value.senderId}
+                                key={i}
+                                />
+                            );
                         })
                     }
                 </Scrollbars>

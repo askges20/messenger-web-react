@@ -41,3 +41,7 @@ export function getMyChatRoomRef(id) {
 export function findLastMessage(chatRoomNum) {
     return ref(database, '/ChatRooms/' + chatRoomNum + '/LastMessage/');
 }
+
+export function getChatMembers(chatRoomNum) {
+    return ref(database, '/ChatRooms/' + chatRoomNum + '/ChatMembers/');
+}

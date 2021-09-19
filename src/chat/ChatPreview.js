@@ -1,23 +1,52 @@
 import React, { useEffect } from 'react';
 import styled from "styled-components";
 
+import { getChatMembers } from '../helpers/database';
+import { onValue } from "firebase/database";
+import { useSelector } from 'react-redux';
+
 const ChatPreview = (props) => {
+    const id = useSelector(state => state.user.id);
 
     const [year, setYear] = React.useState(0);
     const [month, setMonth] = React.useState(0);
     const [date, setDate] = React.useState(0);
+    const [chatRoomName, setChatRoomName] = React.useState('');
+
+    const getChatRoomName = () => {
+        const memberRef = getChatMembers(props.chatRoomNum);  //채팅방 멤버 구하기
+        onValue(memberRef, (members) => {
+            let chatRoomName = '';
+            members.forEach((member) => {
+                if (member.key != id) {
+                    chatRoomName += ', ' + member.key;
+                }
+            })
+
+            if (chatRoomName.length == 0) {
+                setChatRoomName(id);    //나와의 채팅방
+            } else {
+                setChatRoomName(chatRoomName.slice(1,))
+            }
+        })
+    }
 
     useEffect(() => {
         setYear(props.dateTime.slice(0, 4));
         setMonth(props.dateTime.slice(4, 6).trimLeft());
         setDate(props.dateTime.slice(6, 8).trimLeft());
+
+        getChatRoomName();  //채팅방 이름 구하기
     }, );
 
     return(
-        <ChatPreviewConatiner>
+        <ChatPreviewConatiner
+            onClick={() => {
+                window.open('/chatroom/' + chatRoomName + '/' + props.chatRoomNum, '', '_blank');
+            }}
+        >
             <ChatPreviewDiv1>
-                <p>{props.chatRoomNum}</p>
-                <FriendName>{props.senderId}</FriendName>
+                <FriendName>{chatRoomName}</FriendName>
                 <ChatContent>{props.content}</ChatContent>
             </ChatPreviewDiv1>
             <ChatPreviewDiv2>
