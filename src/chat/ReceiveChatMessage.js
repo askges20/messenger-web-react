@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from "styled-components";
 
+import '../css/shadow.css';
+
 const ReceiveChatMessage = (props) => {
     return(
         <MessageContainer>
             <FriendName>{props.friendName}</FriendName>
-            <ChatBox>{props.content}</ChatBox>
+            <ChatBox className="shadow">{props.content}</ChatBox>
             <ChatTime>{props.time.slice(0, 5)}</ChatTime>
         </MessageContainer>
     );
@@ -34,19 +36,21 @@ const ChatTime = styled.div`
 const ChatBox = styled.div`
     position: relative;
     max-width: 75%;
-    background: pink;
+    background: #5587ED;
     border-radius: 10px;
     padding: 10px;
     margin: 5px 10px;
     line-height: 1.3em;
     text-align: left;
+    color: white;
+    font-weight: 300;
 
     display: inline-block;
     flex: none;
     align-items: center;
 
     &:after {
-        border-top:15px solid pink;
+        border-top:15px solid #5587ED;
         border-left: 15px solid transparent;
         border-right: 0px solid transparent;
         border-bottom: 0px solid transparent;

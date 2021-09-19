@@ -43,7 +43,7 @@ const FindFriends = (props) => {
                             <div>{formik.errors.id}</div>
                         ) : null}
                         <br/>
-                        <FindFriendBtn type="submit">친구 찾기</FindFriendBtn>
+                        <FindFriendBtn className="defaultBtn" type="submit">친구 찾기</FindFriendBtn>
                     </form>
                 )}
             </Formik>
@@ -64,7 +64,7 @@ const FindFriendsConatiner = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #FFD9FA;
+    background-color: #D9E5FF;
 `;
 
 const Input = styled.input`
@@ -73,11 +73,14 @@ const Input = styled.input`
 
 const FindFriendBtn = styled.button`
     padding: 8px 24px;
-    background-color: ${(props) => (props.outlined ? "#ffffff" : "#dadafc")};
+    background-color: ${(props) => (props.outlined ? "#ffffff" : "#5587ED")};
+    color: white;
+    font-weight: 700;
     border-radius: 30px;
     border: 1px solid #dadafc;
     width: 150px;
     margin: 10px 20px;
+    cursor: pointer;
 `;
 
 export default FindFriends;

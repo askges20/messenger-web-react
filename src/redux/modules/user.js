@@ -5,7 +5,7 @@ const user_db = firestore.collection('users');
 //Actions
 const GET_USER = 'user/GET_USER';
 const RESET_USER = 'user/RESET_USER';
-const IS_LOADED = 'user/IS_LOADED';
+const LOADED = 'user/LOADED';
 
 const initialState = {
     email: '',
@@ -24,7 +24,8 @@ export const resetUser = () => {
 }
 
 export const isLoaded = (loaded) => {
-    return {type: IS_LOADED, loaded};
+    console.log('로딩 완료');
+    return {type: LOADED, loaded};
 }
 
 //DB에서 사용자 정보 읽어오는 함수
@@ -46,13 +47,13 @@ export default function reducer(state = initialState, action = {}){
         //do reducer stuff
         case 'user/GET_USER': {
             return {email: action.data.email, id: action.data.id,
-                name: action.data.name};
+                name: action.data.name, is_loaded: true};
         }
         case 'user/RESET_USER': {
             return initialState;
         }
         case 'user/LOADED': {
-            return {...state, is_loaded: action.loaded};
+            return {...state, is_loaded: true};
         }
         default:
             return state;

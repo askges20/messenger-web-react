@@ -3,7 +3,9 @@ import styled from "styled-components";
 
 import { firestore } from "../services/firebase";
 import { signUp } from '../helpers/auth';
+import '../css/input.css';
 
+import { TextField } from '@material-ui/core';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -47,7 +49,8 @@ const SignUp = (props) => {
                 >
                 {formik => (
                     <form onSubmit={formik.handleSubmit}>
-                        <Input id="name" type="text" placeholder="이름"
+                        <TextField label="이름" id="name" type="text" variant="outlined"
+                            style={{margin: '10px', backgroundColor: 'white'}}
                             {...formik.getFieldProps('name')}
                         />
                         {formik.touched.name && formik.errors.name ? (
@@ -55,14 +58,16 @@ const SignUp = (props) => {
                         ) : null}
                         <br/>
                         
-                        <Input id="email" type="email" placeholder="이메일"
+                        <TextField label="이메일" id="email" type="email" variant="outlined"
+                            style={{margin: '10px', backgroundColor: 'white'}}
                             {...formik.getFieldProps('email')} />
                         {formik.touched.email && formik.errors.email ? (
                             <div>{formik.errors.email}</div>
                         ) : null}
                         <br/>
 
-                        <Input id="id" type="text" placeholder="아이디"
+                        <TextField label="아이디" id="id" type="text" variant="outlined"
+                            style={{margin: '10px', backgroundColor: 'white'}}
                             {...formik.getFieldProps('id')}
                         />
                         {formik.touched.id && formik.errors.id ? (
@@ -70,7 +75,8 @@ const SignUp = (props) => {
                         ) : null}
                         <br/>
 
-                        <Input id="password" type="password" placeholder="비밀번호"
+                        <TextField label="비밀번호" id="password" type="password" variant="outlined"
+                            style={{margin: '10px', backgroundColor: 'white'}}
                             {...formik.getFieldProps('password')}
                         />
                         {formik.touched.password && formik.errors.password ? (
@@ -104,11 +110,14 @@ const Input = styled.input`
 
 const SignUpBtn = styled.button`
     padding: 8px 24px;
-    background-color: ${(props) => (props.outlined ? "#ffffff" : "#dadafc")};
+    background-color: ${(props) => (props.outlined ? "#ffffff" : "#5587ED")};
+    color: white;
+    font-weight: 700;
     border-radius: 30px;
     border: 1px solid #dadafc;
     width: 200px;
     margin: 10px 20px;
+    cursor: pointer;
 `;
 
 export default SignUp;

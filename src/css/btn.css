@@ -1,12 +1,17 @@
+.defaultBtn {
+    background-color: "#5587ED";
+    color: white;
+    font-weight: 700;
+}
+
 .btn10{
     font-family: "proxima-nova", sans-serif;
     font-weight: 500;
     font-size: 0.9em;
     letter-spacing: 2px;
-    color: #fff;
+    color: black;
     cursor: hand;
     text-align: center;
-    border: 1px solid rgb(255, 218, 253);
     position: relative;
     overflow: hidden!important;
     -webkit-transition: all .3s ease-in-out;
@@ -21,15 +26,16 @@
 
 
 .btn10:hover{
-    border: 1px solid #ff74ca;
-	  color: #2c2c2c!important;
+    /* border: 1px solid #B2CCFF; */
+    color: white;
+	/* color: #2c2c2c!important; */
 }
 .btn10::before {
     content: '';
     width: 0%;
     height: 100%;
     display: block;
-    background: #ffc0ef;
+    background: #6799FF;
     position: absolute;
 	  -ms-transform: skewX(-20deg);
     -webkit-transform: skewX(-20deg); 
@@ -39,10 +45,10 @@
     top: 0;
     z-index: -12;
     -moz-transition: all .7s cubic-bezier(0.77, 0, 0.175, 1);
-  -o-transition: all .7s cubic-bezier(0.77, 0, 0.175, 1);
-  -webkit-transition: all .7s cubic-bezier(0.77, 0, 0.175, 1);
-  transition: all .7s cubic-bezier(0.77, 0, 0.175, 1);
-	   box-shadow:2px 0px 14px rgba(0,0,0,.6);
+    -o-transition: all .7s cubic-bezier(0.77, 0, 0.175, 1);
+    -webkit-transition: all .7s cubic-bezier(0.77, 0, 0.175, 1);
+    transition: all .7s cubic-bezier(0.77, 0, 0.175, 1);
+	box-shadow:2px 0px 14px rgba(0,0,0,.6);
   } 
 
 .btn10::after {
@@ -50,7 +56,7 @@
     width: 0%;
     height: 100%;
     display: block;
-    background: #e1c8ff;
+    background: #79ABFF;
     position: absolute;
 	-ms-transform: skewX(-20deg);
     -webkit-transform: skewX(-20deg); 

@@ -26,6 +26,7 @@ const ProfileConatiner = styled.div`
 const ProfileImg = styled.img`
     width: 80%;
     height: 80%;
+    max-width: 250px;
     border-radius: 50%;
     margin: 16px 0;
 `;

@@ -119,13 +119,15 @@ FriendImg.defaultProps = {
 
 const AddFriendBtn = styled.button`
     padding: 8px 24px;
-    background-color: #dadafc;
+    background-color: ${(props) => (props.outlined ? "#ffffff" : "#5587ED")};
+    color: white;
+    font-weight: 700;
     border-radius: 30px;
-    border: 1px solid #dadafc;
+    border: 1px solid #B2CCFF;
     width: 150px;
     margin: 10px 20px;
     cursor: pointer;
-    box-shadow: 1px 2px purple;
+    box-shadow: 1px 2px #003399;
     &:active {
         box-shadow: 1px 1px 0 rgb(0,0,0,0.5);
         position: relative;

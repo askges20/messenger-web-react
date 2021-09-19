@@ -102,6 +102,7 @@ class ChatList extends React.Component {
                         width: '100%',
                         height: '100%',
                         backgroundColor: 'white',
+                        borderRadius: '20px'
                     }}>
                     <ChatListTitle>채팅 목록</ChatListTitle>
                     {
@@ -130,16 +131,18 @@ const ChatMainConatiner = styled.div`
     display:flex;
     width: calc(100vw - 20%);
     height: calc(100vh - 50px);
-    padding: 20px;
+    padding: 40px;
     box-sizing: border-box;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #FFD9FA;
+    background-color: #D9E5FF;
 `;
 
 const ChatListTitle = styled.h3`
-    padding: 20px;
+    font-size: 22px;
+    font-weight: 700;
+    padding: 30px;
 `;
 
 export default connect(mapStateToProps)(ChatList);

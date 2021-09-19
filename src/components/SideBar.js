@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
+import { Scrollbars } from 'react-custom-scrollbars';
 
 import Profile from './Profile';
 import FriendList from '../friend/FriendList';
@@ -7,10 +8,36 @@ import FriendList from '../friend/FriendList';
 const SideBar = (props) => {
 
     return(
-        <SideBarConatiner>
+        <Scrollbars
+            autoHide
+            autoHideTimeout = {2000}
+            autoHideDuration = {500}
+            renderView={props => (
+                <div {...props}
+                style = {{
+                    ...props.style,
+                    overflowX: 'hidden'
+                }}/>
+            )}
+            renderTrackHorizontal={props =>
+                <div {...props}
+                style = {{
+                    display: 'none'
+                }}/>
+            }
+            style={{
+                position: 'fixed',
+                top: '50px',
+                width: '20%',
+                height: 'calc(100vh - 50px)',
+                boxSizing: 'border-box',
+                flexDirection: 'column',
+                backgroundColor: '#B2CCFF'
+            }}
+        >
             <Profile/>
             <FriendList/>
-        </SideBarConatiner>
+        </Scrollbars>
     )
 };
 

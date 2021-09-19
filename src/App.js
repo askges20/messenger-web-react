@@ -6,11 +6,12 @@ import Login from './login/Login';
 import SignUp from './login/SignUp';
 import Main from './Main';
 import ChatRoom from './chat/ChatRoom';
+import Spinner from './components/Spinner';
 
 import {withRouter} from 'react-router';
 import {Route, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {getUserFB} from './redux/modules/user';
+import {getUserFB, isLoaded} from './redux/modules/user';
 
 import { auth } from './services/firebase';
 
@@ -27,9 +28,12 @@ const mapStateToProps = (state) => {
 //상태 값을 변화시키기 위한 액션 생성 함수를 props로 받아오기 위한 함수
 const mapDispatchToProps = (dispatch) => {
   return {
-    load: (email) => {
+    loadUser: (email) => {
       dispatch(getUserFB(email));
     },
+    loaded: () => {
+      dispatch(isLoaded(true));
+    }
   }
 }
 
@@ -43,9 +47,11 @@ class App extends React.Component {
       if(user) {  //로그인한 상태일 때
         console.log('로그인한 이메일 : ' + user.email);
         this.setState({email: user.email});
-        this.props.load(user.email);  //DB에서 사용자 정보 로드해서 Redux에 넣기
+        this.props.loadUser(user.email);  //DB에서 사용자 정보 로드해서 Redux에 넣기
       } else {  //로그인 안한 상태일 때
         console.log('로그인 안된 상태');
+        this.props.loaded();
+        console.log(this.props.is_loaded);
       }
     });
   }
@@ -57,7 +63,8 @@ class App extends React.Component {
       {/* 로그인 X -> Welcome 페이지, 로그인 O -> Chatting 페이지*/}
       <Switch>
         {(this.props.user_email == '' ?
-          <Route exact path='/' render={(props) => (<Welcome/>)}/> :
+          (this.props.is_loaded ? (<Route exact path='/' render={(props) => (<Welcome/>)}/>) : 
+          <Spinner/>) :
           <Route exact path='/' render={(props) => (<Main/>)}/>)
         }
         <Route path='/login' exact component={Login}/>

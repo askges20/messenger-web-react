@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 import FindFriends from './friend/FindFriends';
 import { userSignOut } from './helpers/auth';
 import { resetUser } from './redux/modules/user';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import ChatIcon from './img/chat-icon.png';
 import FriendIcon from './img/friends-icon.png';
@@ -18,7 +18,7 @@ const Main = (props) => {
     const history = useHistory();
     const dispatch = useDispatch();
     
-    const [menu, setMenu] = React.useState('friend');   //메뉴 선택 값을 상태 관리
+    const [menu, setMenu] = React.useState('chat');   //메뉴 선택 값을 상태 관리
 
     const logout = () => {
         let popup = window.confirm('로그아웃 하시겠습니까?');
@@ -34,7 +34,8 @@ const Main = (props) => {
             <TopBarConatiner>
                 <TopBarIcon src={ChatIcon} onClick={() => {
                     setMenu('chat');
-                }}/>
+                }}>
+                </TopBarIcon>
                 <TopBarIcon src={FriendIcon} onClick={() => {
                     setMenu('friend')
                 }}/>
@@ -69,7 +70,7 @@ const TopBarConatiner = styled.div`
     right: 0;
     height: 50px;
     box-sizing: border-box;
-    background: linear-gradient( to top, #FFA9EE, #FF85CA );
+    background: linear-gradient( to top, #9DCFFF, #6799FF );
     text-align: right;
 `;
 
@@ -79,7 +80,7 @@ const TopBarIcon = styled.img`
     align: center;
     margin: 0 15px;
     cursor: pointer;
-    filter: opacity(0.4) drop-shadow(0 0 0 #DB005B);
+    //filter: opacity(0.5) drop-shadow(0 0 0 #003399);
 `;
 
 export default Main;

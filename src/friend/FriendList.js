@@ -29,12 +29,15 @@ const FriendList = (props) => {
             {
                 friends.map((value, i) => {
                     return (
-                        <div className="btn10" key={i} onClick={() => {
-                            //resizable=no 는 IE에서만 작동된다고 함, 팝업을 띄우는 다른 방법을 찾아봐야함
-                            window.open('/chatroom/' + value.name + '/' + value.chatRoomNum, '', '_blank');
-                        }}>
-                            <span>{value.name}</span>
-                            <div className="transition"></div>
+                        <div>
+                            <div className="btn10" key={i} onClick={() => {
+                                //resizable=no 는 IE에서만 작동된다고 함, 팝업을 띄우는 다른 방법을 찾아봐야함
+                                window.open('/chatroom/' + value.name + '/' + value.chatRoomNum, '', '_blank');
+                            }}>
+                                <span>{value.name}</span>
+                                <div className="transition"></div>
+                            </div>
+                            <hr/>
                         </div>
                     );
                 })

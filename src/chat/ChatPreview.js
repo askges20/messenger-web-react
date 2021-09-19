@@ -64,7 +64,7 @@ const ChatPreviewConatiner = styled.div`
     cursor: pointer;
 
     &:hover {
-        background-color: #EAEAEA;
+        background-color: #F3F3F3;
     }
 `;
 
@@ -102,9 +102,8 @@ const NotReadChatCnt = styled.span`
     padding: 10px;
     line-height: 30px;
     
-    font-weight: 700;
-    color: #F15F5F;
-    background: #FFD8D8;
+    color: white;
+    background: #6799FF;
     // border-radius: 50%;
 
     clip-path: ellipse(50% 30% at 50% 50%);

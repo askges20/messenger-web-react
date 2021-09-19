@@ -8,7 +8,8 @@ const Welcome = (props) => {
 
     return(
         <WelcomeConatiner>
-        <p>안녕하세요! 처음이시면 회원가입을 해주세요.</p>
+        <WelcomeText>안녕하세요!</WelcomeText>
+        <WelcomeText>처음이시면 회원가입을 해주세요.</WelcomeText>
             <Btn
                 onClick={() => {
                     history.push('/login');
@@ -35,13 +36,21 @@ const WelcomeConatiner = styled.div`
     align-items: center;
 `;
 
+const WelcomeText = styled.p`
+    font-size: 18px;
+    margin: 10px;
+`;
+
 const Btn = styled.button`
     padding: 8px 24px;
-    background-color: ${(props) => (props.outlined ? "#ffffff" : "#dadafc")};
+    background-color: ${(props) => (props.outlined ? "#ffffff" : "#5587ED")};
+    color: white;
+    font-weight: 700;
     border-radius: 30px;
     border: 1px solid #dadafc;
     width: 200px;
     margin: 10px 20px;
+    cursor: pointer;
 `;
 
 export default Welcome;

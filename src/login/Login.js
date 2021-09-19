@@ -3,7 +3,9 @@ import styled from "styled-components";
 
 import { signIn } from '../helpers/auth';
 import { auth } from '../services/firebase';
+import '../css/input.css';
 
+import { TextField } from '@material-ui/core';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -61,14 +63,16 @@ const Login = (props) => {
                 >
                 {formik => (
                     <form onSubmit={formik.handleSubmit}>                        
-                        <Input id="email" type="email" placeholder="이메일"
+                        <TextField label="이메일" id="email" type="email"
+                            style={{margin: '10px'}}
                             {...formik.getFieldProps('email')} />
                         {formik.touched.email && formik.errors.email ? (
                             <div>{formik.errors.email}</div>
                         ) : null}
                         <br/>
 
-                        <Input id="password" type="password" placeholder="비밀번호"
+                        <TextField label="비밀번호" id="password" type="password"
+                            style={{margin: '10px'}}
                             {...formik.getFieldProps('password')}
                         />
                         {formik.touched.password && formik.errors.password ? (
@@ -102,11 +106,14 @@ const Input = styled.input`
 
 const SignInBtn = styled.button`
     padding: 8px 24px;
-    background-color: ${(props) => (props.outlined ? "#ffffff" : "#dadafc")};
+    background-color: ${(props) => (props.outlined ? "#ffffff" : "#5587ED")};
+    color: white;
+    font-weight: 700;
     border-radius: 30px;
     border: 1px solid #dadafc;
     width: 200px;
     margin: 10px 20px;
+    cursor: pointer;
 `;
 
 export default Login;

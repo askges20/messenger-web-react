@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from "styled-components";
 
+import '../css/shadow.css';
+
 const SendChatMessage = (props) => {
     return(
         <MessageContainer>
-            <ChatBox>{props.content}</ChatBox>
+            <ChatBox className="shadow">{props.content}</ChatBox>
             <ChatTime>{props.time.slice(0, 5)}</ChatTime>
         </MessageContainer>
         
@@ -29,7 +31,7 @@ const ChatTime = styled.div`
 const ChatBox = styled.div`
     position: relative;
     max-width: 75%;
-    background: lightgray;
+    background: #EAEAEA;
     border-radius: 10px;
     padding: 10px;
     margin: 5px 10px;
@@ -41,7 +43,7 @@ const ChatBox = styled.div`
     align-items: center;
 
     &:after {
-        border-top:15px solid lightgray;
+        border-top:15px solid #EAEAEA;
         border-right: 15px solid transparent;
         border-left: 0px solid transparent;
         border-bottom: 0px solid transparent;

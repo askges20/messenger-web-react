@@ -190,7 +190,7 @@ const ChatTopBar = styled.div`
     width: 100%;
     height: 50px;
     padding: 0 20px;
-    background-color: pink;
+    background-color: #B2CCFF;
     text-align: left;
     line-height: 50px;
     font-weight: 700;
