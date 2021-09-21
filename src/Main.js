@@ -2,10 +2,11 @@ import React from 'react';
 import styled from "styled-components";
 
 import SideBar from './components/SideBar';
+import FindFriends from './friend/FindFriends';
 import ChatList from './chat/ChatList';
+import MyProfile from './profile/MyProfile';
 
 import { useHistory } from 'react-router-dom';
-import FindFriends from './friend/FindFriends';
 import { userSignOut } from './helpers/auth';
 import { resetUser } from './redux/modules/user';
 import { useDispatch } from 'react-redux';
@@ -13,12 +14,13 @@ import { useDispatch } from 'react-redux';
 import ChatIcon from './img/chat-icon.png';
 import FriendIcon from './img/friends-icon.png';
 import LogoutIcon from './img/logout-icon.png';
+import EditProfileIcon from './img/edit-profile-icon.png';
 
 const Main = (props) => {
     const history = useHistory();
     const dispatch = useDispatch();
     
-    const [menu, setMenu] = React.useState('chat');   //메뉴 선택 값을 상태 관리
+    const [menu, setMenu] = React.useState('edit');   //메뉴 선택 값을 상태 관리
 
     const logout = () => {
         let popup = window.confirm('로그아웃 하시겠습니까?');
@@ -26,6 +28,23 @@ const Main = (props) => {
             userSignOut();  //로그아웃
             dispatch(resetUser());  //redux 유저 정보 초기화
             history.push('/'); //웰컴 화면으로 이동
+        }
+    }
+
+    // 선택한 메뉴에 따라 다른 화면 렌더링
+    const MainContent = () => {
+        switch (menu){
+            case 'friend':
+                return <FindFriends/>;
+                break;
+            case 'chat':
+                return <ChatList/>;
+                break;
+            case 'edit':
+                return <MyProfile/>;
+                break;
+            default:
+                return <ChatList/>;
         }
     }
 
@@ -37,7 +56,10 @@ const Main = (props) => {
                 }}>
                 </TopBarIcon>
                 <TopBarIcon src={FriendIcon} onClick={() => {
-                    setMenu('friend')
+                    setMenu('friend');
+                }}/>
+                <TopBarIcon src={EditProfileIcon} onClick={() => {
+                    setMenu('edit');
                 }}/>
                 <TopBarIcon src={LogoutIcon} onClick={() => {
                     logout();
@@ -45,7 +67,7 @@ const Main = (props) => {
             </TopBarConatiner>
             <div>
                 <SideBar/>
-                {menu == 'friend' ? <FindFriends/> : <ChatList/>}
+                <MainContent/>
             </div>
         </MainConatiner>
     )
@@ -78,7 +100,7 @@ const TopBarIcon = styled.img`
     padding-top: 10px;
     height: 30px;
     align: center;
-    margin: 0 15px;
+    margin: 0 10px;
     cursor: pointer;
     //filter: opacity(0.5) drop-shadow(0 0 0 #003399);
 `;

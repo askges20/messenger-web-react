@@ -1,26 +1,21 @@
 import React, { useEffect } from 'react';
 import styled from "styled-components";
 
-import FriendProfile from './FriendProfile';
-
 import { TextField } from '@material-ui/core';
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 import { useHistory } from 'react-router-dom';
 
-const FindFriends = (props) => {
+const EditProfile = (props) => {
     const history = useHistory();
-    const [searchId, setSearchId] = React.useState('');   //검색 아이디 상태 관리
 
     useEffect(() => {
-        console.log(searchId);
     });
 
     return(
-        <FindFriendsConatiner>
-            <h3 style={{margin:'20px'}}>채팅 친구를 찾아보세요!</h3>
-            <p style={{margin:'10px'}}>친구의 아이디를 검색해서 찾을 수 있습니다.</p>
+        <EditProfileConatiner>
+            <h3 style={{margin:'20px'}}>프로필 수정</h3>
             <Formik
                 initialValues={{id: ''}}
 
@@ -32,7 +27,7 @@ const FindFriends = (props) => {
                 })}
 
                 onSubmit = {(values, { setSubmitting }) => {
-                    setSearchId(values.id); //상태에 아이디 등록
+                    //setSearchId(values.id); //상태에 아이디 등록
                 }}
                 >
                 {formik => (
@@ -45,21 +40,20 @@ const FindFriends = (props) => {
                             { msg => <div style={{ color: '#6B66FF' }}>{msg}</div> }
                         </ErrorMessage>
                         <br/>
-                        <FindFriendBtn className="defaultBtn" type="submit">친구 찾기</FindFriendBtn>
+                        <EditProfileBtn className="defaultBtn" type="submit">친구 찾기</EditProfileBtn>
                     </form>
                 )}
             </Formik>
-            {searchId != '' ? <FriendProfile friendId={searchId} key={searchId}/> : <div></div>}
-        </FindFriendsConatiner>
+        </EditProfileConatiner>
     )
 };
 
-const FindFriendsConatiner = styled.div`
+const EditProfileConatiner = styled.div`
     position: absolute;
     top: 50px;
     right: 0;
     display:flex;
-    width: 80%;
+    width: 20%;
     height: calc(100vh - 50px);
     padding: 20px;
     box-sizing: border-box;
@@ -69,7 +63,7 @@ const FindFriendsConatiner = styled.div`
     background-color: #D9E5FF;
 `;
 
-const FindFriendBtn = styled.button`
+const EditProfileBtn = styled.button`
     padding: 8px 24px;
     background-color: ${(props) => (props.outlined ? "#ffffff" : "#5587ED")};
     color: white;
@@ -81,4 +75,4 @@ const FindFriendBtn = styled.button`
     cursor: pointer;
 `;
 
-export default FindFriends;
+export default EditProfile;

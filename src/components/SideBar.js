@@ -35,7 +35,7 @@ const SideBar = (props) => {
                 backgroundColor: '#B2CCFF'
             }}
         >
-            <Profile/>
+            {/* <Profile/> */}
             <FriendList/>
         </Scrollbars>
     )
