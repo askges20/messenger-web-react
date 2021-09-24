@@ -24,7 +24,7 @@ class ChatRoom extends React.Component {
     sendMessage = () => {
         const value = content.current.value;
     
-        if (value.length == 0) {    //채팅을 입력하지 않았을 때
+        if (value.length === 0) {    //채팅을 입력하지 않았을 때
             content.current.focus();    //focus 주기
             return; //전송하지 않음
         }
@@ -50,6 +50,8 @@ class ChatRoom extends React.Component {
 
     constructor(props) {
         super(props);
+        this.loadCnt = 0;
+
         this.chatRoomNum = props.match.params.chat_room_num;
         this.friendName = props.match.params.friend_name;
 
@@ -57,7 +59,6 @@ class ChatRoom extends React.Component {
 
         this.state = {
             chatHistory: [], //채팅 기록을 상태로 관리
-            loadCnt: 0
         }
 
         onValue(this.chatHistoryRef, (snapshot) => {
@@ -83,23 +84,23 @@ class ChatRoom extends React.Component {
     }
 
     componentDidUpdate() {
-        this.state.loadCnt += 1;
+        this.loadCnt += 1;
         console.log(this.state.loadCnt);
         content.current.focus();
 
-        if (this.state.loadCnt == 3) {  //채팅방 입장 시 가장 아래로 스크롤
+        if (this.loadCnt === 3) {  //채팅방 입장 시 가장 아래로 스크롤
             chatContentBox.current.scrollToBottom();
             return;
         }
 
         const chatCnt = this.state.chatHistory.length;  //누적 채팅 개수
-        if (chatCnt == 0){  //채팅 기록이 없거나 아직 채팅 내역을 불러오지 않은 상태
+        if (chatCnt === 0){  //채팅 기록이 없거나 아직 채팅 내역을 불러오지 않은 상태
             return;
         }
         
         const lastSenderId = this.state.chatHistory[chatCnt - 1].senderId;
         console.log(lastSenderId);
-        if (lastSenderId == this.props.loginId){    //채팅을 전송하면
+        if (lastSenderId === this.props.loginId){    //채팅을 전송하면
             chatContentBox.current.scrollToBottom();    //채팅 가장 아래로 자동 스크롤
         }
     }
@@ -139,7 +140,7 @@ class ChatRoom extends React.Component {
                                 return (
                                     <ChatDateLine key={i} year={value.year} month={value.month} date={value.date}/>
                                 )
-                            } else if (value.senderId == this.props.loginId){
+                            } else if (value.senderId === this.props.loginId){
                                 return (
                                     <SendChatMessage key={i} content={value.content} time={value.time}/>
                                 );

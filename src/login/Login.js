@@ -57,6 +57,8 @@ const Login = (props) => {
                             case "auth/wrong-password":
                                 alert("비밀번호를 다시 확인해주세요.");
                                 break;
+                            default:
+                                break;
                         }
                     })
                 }}
@@ -98,10 +100,6 @@ const SignInConatiner = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-`;
-
-const Input = styled.input`
-    margin:10px;
 `;
 
 const SignInBtn = styled.button`

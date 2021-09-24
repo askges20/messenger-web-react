@@ -7,10 +7,7 @@ import { TextField } from '@material-ui/core';
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
-import { useHistory } from 'react-router-dom';
-
 const FindFriends = (props) => {
-    const history = useHistory();
     const [searchId, setSearchId] = React.useState('');   //검색 아이디 상태 관리
 
     useEffect(() => {
@@ -49,7 +46,7 @@ const FindFriends = (props) => {
                     </form>
                 )}
             </Formik>
-            {searchId != '' ? <FriendProfile friendId={searchId} key={searchId}/> : <div></div>}
+            {searchId !== '' ? <FriendProfile friendId={searchId} key={searchId}/> : <div></div>}
         </FindFriendsConatiner>
     )
 };

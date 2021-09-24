@@ -21,7 +21,7 @@ const FriendList = (props) => {
                 listFromFB.push({id: doc.data().id, name: doc.data().name, chatRoomNum: doc.data().chatRoomNum});
             });
             setFriends(listFromFB);
-    })}, []);
+    })}, );
 
     return (
         <FriendListContainer>
@@ -29,8 +29,8 @@ const FriendList = (props) => {
             {
                 friends.map((value, i) => {
                     return (
-                        <div>
-                            <div className="btn10" key={i} onClick={() => {
+                        <div key={i} >
+                            <div className="btn10" onClick={() => {
                                 //resizable=no 는 IE에서만 작동된다고 함, 팝업을 띄우는 다른 방법을 찾아봐야함
                                 window.open('/chatroom/' + value.name + '/' + value.chatRoomNum, '', '_blank');
                             }}>

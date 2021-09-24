@@ -38,9 +38,6 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 class App extends React.Component {
-  constructor(props){
-    super(props);
-  }
 
   componentDidMount() {
     auth().onAuthStateChanged((user) => {
@@ -62,7 +59,7 @@ class App extends React.Component {
     <div className="App">
       {/* 로그인 X -> Welcome 페이지, 로그인 O -> Chatting 페이지*/}
       <Switch>
-        {(this.props.user_email == '' ?
+        {(this.props.user_email === '' ?
           (this.props.is_loaded ? (<Route exact path='/' render={(props) => (<Welcome/>)}/>) : 
           <Spinner/>) :
           <Route exact path='/' render={(props) => (<Main/>)}/>)

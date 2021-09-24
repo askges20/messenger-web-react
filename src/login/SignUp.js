@@ -109,10 +109,6 @@ const SignUpConatiner = styled.div`
     align-items: center;
 `;
 
-const Input = styled.input`
-    margin:10px;
-`;
-
 const SignUpBtn = styled.button`
     padding: 8px 24px;
     background-color: ${(props) => (props.outlined ? "#ffffff" : "#5587ED")};

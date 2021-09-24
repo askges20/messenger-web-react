@@ -36,13 +36,10 @@ const Main = (props) => {
         switch (menu){
             case 'friend':
                 return <FindFriends/>;
-                break;
             case 'chat':
                 return <ChatList/>;
-                break;
             case 'edit':
                 return <MyProfile/>;
-                break;
             default:
                 return <ChatList/>;
         }
@@ -75,8 +72,8 @@ const Main = (props) => {
 
 const MainConatiner = styled.div`
     display:flex;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     box-sizing: border-box;
     flex-direction: column;

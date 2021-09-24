@@ -8,36 +8,29 @@ import { useSelector } from 'react-redux';
 const ChatPreview = (props) => {
     const id = useSelector(state => state.user.id);
 
-    const [year, setYear] = React.useState(0);
-    const [month, setMonth] = React.useState(0);
-    const [date, setDate] = React.useState(0);
+    const [chatDate, setChatDate] = React.useState(0);
     const [chatRoomName, setChatRoomName] = React.useState('');
 
-    const getChatRoomName = () => {
+    useEffect(() => {
+        setChatDate(props.dateTime);
+        
+        //채팅방 이름 짓기
         const memberRef = getChatMembers(props.chatRoomNum);  //채팅방 멤버 구하기
         onValue(memberRef, (members) => {
             let chatRoomName = '';
             members.forEach((member) => {
-                if (member.key != id) {
+                if (member.key !== id) {
                     chatRoomName += ', ' + member.key;
                 }
             })
 
-            if (chatRoomName.length == 0) {
+            if (chatRoomName.length === 0) {
                 setChatRoomName(id);    //나와의 채팅방
             } else {
                 setChatRoomName(chatRoomName.slice(1,))
             }
         })
-    }
-
-    useEffect(() => {
-        setYear(props.dateTime.slice(0, 4));
-        setMonth(props.dateTime.slice(4, 6).trimLeft());
-        setDate(props.dateTime.slice(6, 8).trimLeft());
-
-        getChatRoomName();  //채팅방 이름 구하기
-    }, );
+    }, [props.dateTime, props.chatRoomNum, id]);
 
     return(
         <ChatPreviewConatiner
@@ -50,7 +43,8 @@ const ChatPreview = (props) => {
                 <ChatContent>{props.content}</ChatContent>
             </ChatPreviewDiv1>
             <ChatPreviewDiv2>
-                <LastChatTime>{year}년 {month}월 {date}일</LastChatTime>
+                <LastChatTime>
+                    {`${chatDate}`.slice(0, 4)}년 {`${chatDate}`.slice(4, 6).trimLeft()}월 {`${chatDate}`.slice(6, 8).trimLeft()}일</LastChatTime>
                 <NotReadChatCnt>2</NotReadChatCnt>
             </ChatPreviewDiv2>
         </ChatPreviewConatiner>

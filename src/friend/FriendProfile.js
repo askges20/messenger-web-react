@@ -20,7 +20,7 @@ const FriendProfile = (props) => {
     const findUser = () => {
         firestore.collection('users').get().then((docs) => {
             docs.forEach((doc) => {
-                if (doc.data().id == friendId) {
+                if (doc.data().id === friendId) {
                     setFriendEmail(doc.id);
                     setFriendName(doc.data().name);
                     setLoaded(true);
@@ -33,7 +33,7 @@ const FriendProfile = (props) => {
     
     useEffect(() => {
         findUser();
-    }, []);
+    });
 
     //현재 날짜와 시간을 이용해서 채팅방 번호 생성
     function makeChatRoomNum() {
@@ -69,7 +69,7 @@ const FriendProfile = (props) => {
 
     return(
         <FriendProfileConatiner>
-            {isLoaded ? friendName == '' ? 
+            {isLoaded ? friendName === '' ? 
             (<div>해당 아이디로 검색되는 유저가 없습니다.</div>) :
             (
                 <div>
