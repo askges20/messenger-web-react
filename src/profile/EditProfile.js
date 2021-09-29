@@ -8,8 +8,22 @@ import { TextField } from '@material-ui/core';
 import ImageSearchOutlinedIcon from '@material-ui/icons/ImageSearchOutlined';
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import {withRouter} from 'react-router';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, connect } from 'react-redux';
+import {getUserFB, isLoaded} from '../redux/modules/user';
+
+//상태 값을 변화시키기 위한 액션 생성 함수를 props로 받아오기 위한 함수
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loadUser: (email) => {
+            dispatch(getUserFB(email));
+        },
+        loaded: () => {
+            dispatch(isLoaded(true));
+        }
+    }
+}
 
 const EditProfile = (props) => {
     const history = useHistory();
@@ -20,6 +34,11 @@ const EditProfile = (props) => {
     const name = useSelector(state => state.user.name);
     const email = useSelector(state => state.user.email);
     const intro = useSelector(state => state.user.intro);
+
+    const setUserInfo = () => {
+        // loadUser(email);
+        props.loadUser(email);
+    }
     
     useEffect(() => {
     });
@@ -80,6 +99,7 @@ const EditProfile = (props) => {
                         users.doc(email).update({'name': values.name, 'intro': values.intro}).then(() => {
                                 alert("프로필 수정이 완료되었습니다!");
                                 // changeMenu(false);
+                                setUserInfo();
                                 history.push('/');
                             }
                         )
@@ -180,4 +200,4 @@ const Btn = styled.button`
     cursor: pointer;
 `;
 
-export default EditProfile;
+export default connect(null, mapDispatchToProps)(withRouter(EditProfile));
