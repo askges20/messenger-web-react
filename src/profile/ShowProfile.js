@@ -10,6 +10,7 @@ const ShowProfile = (props) => {
   const email = useSelector(state => state.user.email);
   const id = useSelector(state => state.user.id);
   const name = useSelector(state => state.user.name);
+  const intro = useSelector(state => state.user.intro);
 
   useEffect(() => {
   });
@@ -25,7 +26,7 @@ const ShowProfile = (props) => {
       </ProfileContainer1>
       <ProfileContainer2>
         <ProfileName>{name}</ProfileName>
-        <ProfileInfo>소개글</ProfileInfo>
+        <ProfileInfo>{intro}</ProfileInfo>
         <br/>
 
         <ProfileInfo>{email}</ProfileInfo>

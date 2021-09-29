@@ -11,12 +11,13 @@ const initialState = {
     email: '',
     id: '',
     name: '',
+    intro: '',
     is_loaded: false,
 }
 
 //Action Creators
-export const loadUser = (email, id, name) => {
-    return {type: GET_USER, data: {email:email, id:id, name:name}};
+export const loadUser = (email, id, name, intro) => {
+    return {type: GET_USER, data: {email, id, name, intro}};
 }
 
 export const resetUser = () => {
@@ -35,7 +36,8 @@ export const getUserFB = (email) => {
         user_db.doc(email).get().then((info) => {
             const id = info.get('id');
             const name = info.get('name');
-            dispatch(loadUser(email, id, name));    //액션 발생시키기
+            const intro = info.get('intro');
+            dispatch(loadUser(email, id, name, intro));    //액션 발생시키기
             dispatch(isLoaded(true));
         })
     }
@@ -47,7 +49,7 @@ export default function reducer(state = initialState, action = {}){
         //do reducer stuff
         case 'user/GET_USER': {
             return {email: action.data.email, id: action.data.id,
-                name: action.data.name, is_loaded: true};
+                name: action.data.name, intro: action.data.intro, is_loaded: true};
         }
         case 'user/RESET_USER': {
             return initialState;

@@ -1,17 +1,25 @@
 import React, { useEffect } from 'react';
 import styled from "styled-components";
 
+import { firestore } from "../services/firebase";
 import userImg from '../img/user.png';
 
 import { TextField } from '@material-ui/core';
 import ImageSearchOutlinedIcon from '@material-ui/icons/ImageSearchOutlined';
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const EditProfile = (props) => {
+    const history = useHistory();
+
+    const users = firestore.collection("users");
+
     const changeMenu = props.changeMenu;
     const name = useSelector(state => state.user.name);
+    const email = useSelector(state => state.user.email);
+    const intro = useSelector(state => state.user.intro);
     
     useEffect(() => {
     });
@@ -47,7 +55,6 @@ const EditProfile = (props) => {
             <ProfileContainer2>
                 <div style={{
                     cursor: 'pointer',
-                    // backgroundColor:'pink',
                     position: 'absolute',
                     width: '200px',
                     height: '50px',
@@ -57,7 +64,7 @@ const EditProfile = (props) => {
                 onClick={selectImg}
                 />
                 <Formik
-                    initialValues={{name}}
+                    initialValues={{name, intro}}
 
                     validationSchema={
                         //유효성 검사 스키마
@@ -65,16 +72,21 @@ const EditProfile = (props) => {
                         name: Yup.string()
                         .required('이름을 입력해주세요.'),
                         intro: Yup.string()
-                        .required('소개글을 입력해주세요.')
+                        // .required('소개글을 입력해주세요.')
                     })}
 
                     onSubmit = {(values, { setSubmitting }) => {
                         //setSearchId(values.id); //상태에 아이디 등록
+                        users.doc(email).update({'name': values.name, 'intro': values.intro}).then(() => {
+                                alert("프로필 수정이 완료되었습니다!");
+                                // changeMenu(false);
+                                history.push('/');
+                            }
+                        )
                     }}
                     >
                     {formik => (
                         <form onSubmit={formik.handleSubmit}>
-                            {console.log(name)}
                             <TextField
                                 name="name" id="name" type="text"
                                 style={{marginBottom: '10px'}}
