@@ -36,9 +36,6 @@ const EditProfile = (props) => {
     const setUserInfo = () => {
         props.loadUser(email);
     }
-    
-    useEffect(() => {
-    });
 
     function backToShowProfile() {
         changeMenu(false);
@@ -51,11 +48,33 @@ const EditProfile = (props) => {
         storage.ref(`/profile/${id}`).put(image);   //사용자 아이디를 이미지 이름으로 지정해서 storage 업로드
     }
 
+    function readImg(input) {
+        if (input.files && input.files[0]) {
+            //이미지 파일인지 검사 (생략)
+            //FileReader 인스턴스 생성
+            const reader = new FileReader();
+            //이미지가 로드된 경우
+            reader.onload = e => {
+                const previewImg = document.getElementById('profileImg');
+                previewImg.src = e.target.result;
+            }
+            //reader가 이미지 읽도록 하기
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    useEffect(() => {
+        const inputImg = document.getElementById('inputImg');
+        inputImg.addEventListener('change', e => {
+            readImg(e.target);
+        });
+    })
+
     return(
         <EditProfileConatiner>
             <ProfileContainer1>
                 <ImgArea for='inputImg' style={{cursor: 'pointer'}}>
-                    <ProfileImg/>
+                    <ProfileImg id='profileImg'/>
                     <ImageSearchOutlinedIcon
                         style={{   
                             position: 'absolute',
@@ -178,6 +197,7 @@ const ProfileImg = styled.img`
     width: 100%;
     height: 100%;
     border-radius: 50%;
+    object-fit: cover;
 `;
 
 ProfileImg.defaultProps = {
