@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
 
-import { firestore } from "../services/firebase";
+import { firestore, storage } from "../services/firebase";
 import userImg from '../img/user.png';
 
 import { TextField } from '@material-ui/core';
@@ -9,7 +9,6 @@ import ImageSearchOutlinedIcon from '@material-ui/icons/ImageSearchOutlined';
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import {withRouter} from 'react-router';
-import { useHistory } from 'react-router-dom';
 import { useSelector, connect } from 'react-redux';
 import {getUserFB, isLoaded} from '../redux/modules/user';
 
@@ -18,43 +17,44 @@ const mapDispatchToProps = (dispatch) => {
     return {
         loadUser: (email) => {
             dispatch(getUserFB(email));
-        },
-        loaded: () => {
-            dispatch(isLoaded(true));
         }
     }
 }
 
 const EditProfile = (props) => {
-    const history = useHistory();
+    const [image, setImage] = useState('');
 
-    const users = firestore.collection("users");
+    const users = firestore.collection("users");    //Firestore DB
 
     const changeMenu = props.changeMenu;
-    const name = useSelector(state => state.user.name);
+    //redux
     const email = useSelector(state => state.user.email);
+    const id = useSelector(state => state.user.id);
+    const name = useSelector(state => state.user.name);
     const intro = useSelector(state => state.user.intro);
 
     const setUserInfo = () => {
-        // loadUser(email);
         props.loadUser(email);
     }
     
     useEffect(() => {
     });
 
-    function cancelEdit() {
+    function backToShowProfile() {
         changeMenu(false);
     }
 
-    function selectImg() {
-        alert('클릭');
+    const uploadImg = () => {
+        if (image == null) {
+            return;
+        }
+        storage.ref(`/profile/${id}`).put(image);   //사용자 아이디를 이미지 이름으로 지정해서 storage 업로드
     }
 
     return(
         <EditProfileConatiner>
             <ProfileContainer1>
-                <ImgArea style={{cursor: 'pointer'}} onClick={selectImg}>
+                <ImgArea for='inputImg' style={{cursor: 'pointer'}}>
                     <ProfileImg/>
                     <ImageSearchOutlinedIcon
                         style={{   
@@ -80,7 +80,6 @@ const EditProfile = (props) => {
                     top: 0,
                     left: 'calc(50% - 100px)'
                 }}
-                onClick={selectImg}
                 />
                 <Formik
                     initialValues={{name, intro}}
@@ -100,13 +99,17 @@ const EditProfile = (props) => {
                                 alert("프로필 수정이 완료되었습니다!");
                                 // changeMenu(false);
                                 setUserInfo();
-                                history.push('/');
+                                uploadImg();
+                                backToShowProfile();
                             }
                         )
                     }}
                     >
                     {formik => (
                         <form onSubmit={formik.handleSubmit}>
+                            <input type="file" id='inputImg' style={{display:'none'}} onChange={(e) => {
+                                setImage(e.target.files[0]);
+                            }}/>
                             <TextField
                                 name="name" id="name" type="text"
                                 style={{marginBottom: '10px'}}
@@ -130,7 +133,7 @@ const EditProfile = (props) => {
                                 { msg => <div style={{ color: '#6B66FF' }}>{msg}</div> }
                             </ErrorMessage>
                             <br/>
-                            <Btn onClick={cancelEdit}>수정 취소</Btn>
+                            <Btn onClick={backToShowProfile}>수정 취소</Btn>
                             <Btn type="submit">수정 완료</Btn>
                         </form>
                     )}
@@ -163,7 +166,7 @@ const ProfileContainer1 = styled.div`
     background: linear-gradient(to right, #A0D9E2, #acb6e5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 `;
 
-const ImgArea = styled.div`
+const ImgArea = styled.label`
     position: absolute;
     left: calc(50% - 100px);
     top: 100px;

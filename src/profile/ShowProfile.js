@@ -80,6 +80,7 @@ const ProfileName = styled.p`
 
 const ProfileContainer2 = styled.div`
   width: 100%;
+  max-width: 500px;
   position: absolute;
   top: 250px;
   padding-top: 80px;
@@ -87,6 +88,7 @@ const ProfileContainer2 = styled.div`
 
 const ProfileInfo = styled.div`
   margin: 20px;
+  line-height: 1.8em;
 `;
 
 const EditProfileBtn = styled.button`
