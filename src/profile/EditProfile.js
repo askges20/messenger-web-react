@@ -27,11 +27,21 @@ const EditProfile = (props) => {
     const users = firestore.collection("users");    //Firestore DB
 
     const changeMenu = props.changeMenu;
+    const changeImg = props.changeImg;
     //redux
     const email = useSelector(state => state.user.email);
     const id = useSelector(state => state.user.id);
     const name = useSelector(state => state.user.name);
     const intro = useSelector(state => state.user.intro);
+
+    useEffect(() => {
+        const profileImg = document.getElementById('profileImg');
+        if (props.imgUrl === '') {
+          profileImg.src = userImg;
+        } else {
+          profileImg.src = props.imgUrl;
+        }
+    })
 
     const setUserInfo = () => {
         props.loadUser(email);
@@ -45,7 +55,10 @@ const EditProfile = (props) => {
         if (image == null) {
             return;
         }
-        storage.ref(`/profile/${id}`).put(image);   //사용자 아이디를 이미지 이름으로 지정해서 storage 업로드
+        //사용자 아이디를 이미지 이름으로 지정해서 storage 업로드
+        storage.ref(`/profile/${id}`).put(image).then(() => {   
+            changeImg();    //부모 컴포넌트 MyProfile.js 상태 변경
+        });
     }
 
     function readImg(input) {

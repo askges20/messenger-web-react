@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
 
 import userImg from '../img/user.png';
@@ -8,12 +8,17 @@ import { useSelector } from 'react-redux';
 const ShowProfile = (props) => {
   const changeMenu = props.changeMenu;
   const email = useSelector(state => state.user.email);
-  const id = useSelector(state => state.user.id);
   const name = useSelector(state => state.user.name);
   const intro = useSelector(state => state.user.intro);
 
   useEffect(() => {
-  });
+    const profileImg = document.getElementById('profileImg');
+    if (props.imgUrl === '') {
+      profileImg.src = userImg;
+    } else {
+      profileImg.src = props.imgUrl;
+    }
+  })
 
   function goToEdit() {
     changeMenu(true);
@@ -22,7 +27,7 @@ const ShowProfile = (props) => {
   return(
     <ShowProfileConatiner>
       <ProfileContainer1>
-        <ProfileImg/>
+        <ProfileImg id='profileImg'/>
       </ProfileContainer1>
       <ProfileContainer2>
         <ProfileName>{name}</ProfileName>
@@ -65,6 +70,8 @@ const ProfileImg = styled.img`
   left: calc(50% - 100px);
   top: 100px;
   width: 200px;
+  height: 200px;
+  object-fit: cover;
   border-radius: 50%;
 `;
 

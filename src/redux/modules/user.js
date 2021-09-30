@@ -1,4 +1,4 @@
-import {firestore} from '../../services/firebase';
+import { firestore } from '../../services/firebase';
 
 const user_db = firestore.collection('users');
 
