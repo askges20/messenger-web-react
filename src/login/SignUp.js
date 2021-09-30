@@ -20,7 +20,7 @@ const SignUp = (props) => {
         <SignUpConatiner>
             <h2>회원가입</h2>
             <Formik
-                initialValues={{ name: '', email: '', id:'', password: ''}}
+                initialValues={{ name: '', email: '', id:'', password: '', intro:''}}
 
                 validationSchema={
                     //유효성 검사 스키마
@@ -38,11 +38,14 @@ const SignUp = (props) => {
                     .min(8, '비밀번호는 최소 8글자 이상 작성해주세요.')
                     .max(20, '비밀번호는 20글자 이하로 작성해주세요.')
                     .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, '비밀번호는 영어, 숫자, 특수기호를 포함하여 작성해주세요.')
-                    .required('비밀번호를 입력해주세요.')
+                    .required('비밀번호를 입력해주세요.'),
+                    intro: Yup.string()
+                    .max(150, '소개글은 150글자 이하로 작성해주세요')
+                    .required('소개글을 작성해주세요')
                 })}
 
                 onSubmit = {(values, { setSubmitting }) => {
-                    users.doc(values.email).set({'id':values.id, 'name':values.name});   //DB에 유저 정보 등록
+                    users.doc(values.email).set({'id':values.id, 'name':values.name, 'intro':values.intro});   //DB에 유저 정보 등록
                     signUp(values.email, values.password);
                     alert('회원가입이 완료되었습니다.');
                     history.push('/login');
@@ -89,6 +92,16 @@ const SignUp = (props) => {
                         </ErrorMessage>
                         <br/>
 
+                        <TextField label="소개글" name="intro" id="intro" type="text" variant="outlined"
+                            multiline rows={4}
+                            style={{marign: '10px', backgroundColor: 'white'}}
+                            {...formik.getFieldProps('intro')}
+                        />
+                        <ErrorMessage name="intro">
+                            { msg => <div style={{ color: '#6B66FF' }}>{msg}</div> }
+                        </ErrorMessage>
+                        <br/>
+
                         <SignUpBtn type="submit">가입하기</SignUpBtn>
                     </form>
                 )}
@@ -117,7 +130,7 @@ const SignUpBtn = styled.button`
     border-radius: 30px;
     border: 1px solid #dadafc;
     width: 200px;
-    margin: 10px 20px;
+    margin: 30px 20px;
     cursor: pointer;
 `;
 
