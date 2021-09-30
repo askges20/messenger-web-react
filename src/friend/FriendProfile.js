@@ -15,6 +15,7 @@ const FriendProfile = (props) => {
     const [isLoaded, setLoaded] = React.useState(false);
     const [friendEmail, setFriendEmail] = React.useState('');
     const [friendName, setFriendName] = React.useState('');
+    const [friendIntro, setFriendIntro] = React.useState('');
 
     //firebase firestore에서 해당 유저 검색
     const findUser = () => {
@@ -23,6 +24,7 @@ const FriendProfile = (props) => {
                 if (doc.data().id === friendId) {
                     setFriendEmail(doc.id);
                     setFriendName(doc.data().name);
+                    setFriendIntro(doc.data().intro);
                     setLoaded(true);
                 }
             });
@@ -75,6 +77,7 @@ const FriendProfile = (props) => {
                 <div>
                     <FriendImg/>
                     <FriendName>{friendName}</FriendName>
+                    {friendIntro === '' ? <div></div> : <FriendIntro>{friendIntro}</FriendIntro>}
                     <AddFriendBtn onClick={() => {addFriend()}}>친구 추가하기</AddFriendBtn>
                 </div>
             ) :
@@ -85,9 +88,9 @@ const FriendProfile = (props) => {
 
 const FriendProfileConatiner = styled.div`
     display:flex;
-    width: 60%;
-    max-width: 350px;
-    min-height: 150px;
+    width: 80%;
+    max-width: 400px;
+    min-height: 200px;
     padding: 20px;
     margin: 20px;
     box-sizing: border-box;
@@ -111,6 +114,12 @@ const FriendImg = styled.img`
 
 const FriendName = styled.div`
     margin: 20px;
+`;
+
+const FriendIntro = styled.div`
+    font-size: 0.8em;
+    line-height: 1.2em;
+    margin: 10px;
 `;
 
 FriendImg.defaultProps = {
