@@ -6,7 +6,7 @@
 - 친구 검색 및 추가, 친구 목록 조회 ✔
 - 1:1 채팅 내역 조회, 전송, 실시간 업데이트 ✔
 - 채팅방 목록 보기 및 최신순 정렬 기능 ✔
-- 프로필 정보 수정 (구현 중)
+- 프로필 정보 수정 ✔
 - 단체방 생성 및 멤버 초대
 - 기타 기능 확장 예정
 
@@ -24,6 +24,7 @@
 - 툴 : NPM, Yarn
 - 데이터베이스 : Google Firebase Firestore & Realtime Database
 - 사용자 관리 : Google Firebase Authentication
+- 이미지 관리 : Google Firebase Storage 
 - 패키지 : firebase, react-router-dom, redux, react-redux, redux-thunk, @material-ui/core, styled-components, formik, yup, moment, react-custom-scrollbars ...
 
 ## 개발 일지
