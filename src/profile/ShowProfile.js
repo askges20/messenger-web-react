@@ -48,7 +48,7 @@ const ShowProfileConatiner = styled.div`
   top: 50px;
   right: 0;
   display:flex;
-  width: 80%;
+  width: 100%;
   box-sizing: border-box;
   flex-direction: column;
   justify-content: center;

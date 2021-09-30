@@ -90,10 +90,11 @@ const TopBarConatiner = styled.div`
     height: 50px;
     box-sizing: border-box;
     background: linear-gradient( to top, #9DCFFF, #6799FF );
-    text-align: right;
+    text-align: center;
 `;
 
 const TopBarIcon = styled.img`
+    padding: 0 5px;
     padding-top: 10px;
     height: 30px;
     align: center;

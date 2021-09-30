@@ -56,7 +56,7 @@ const FindFriendsConatiner = styled.div`
     top: 50px;
     right: 0;
     display:flex;
-    width: 80%;
+    width: 100%;
     height: calc(100vh - 50px);
     padding: 20px;
     box-sizing: border-box;

@@ -1,12 +1,14 @@
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 
+import '../css/sidebar.css';
 import FriendList from '../friend/FriendList';
 
 const SideBar = (props) => {
 
     return(
         <Scrollbars
+            id = 'friendList'
             autoHide
             autoHideTimeout = {2000}
             autoHideDuration = {500}
@@ -23,15 +25,6 @@ const SideBar = (props) => {
                     display: 'none'
                 }}/>
             }
-            style={{
-                position: 'fixed',
-                top: '50px',
-                width: '20%',
-                height: 'calc(100vh - 50px)',
-                boxSizing: 'border-box',
-                flexDirection: 'column',
-                backgroundColor: '#B2CCFF'
-            }}
         >
             {/* <Profile/> */}
             <FriendList/>

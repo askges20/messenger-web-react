@@ -1,0 +1,16 @@
+#friendList {
+    position: fixed!important;
+    top: 50px;
+    left: -150px;
+    width: 200px!important;
+    height: calc(100vh - 50px)!important;
+    box-sizing: border-box;
+    flex-direction: column;
+    background-color: #B2CCFF;
+    transition: left .5s;
+    z-index: 2;
+}
+
+#friendList:hover {
+    left: 0px;
+}

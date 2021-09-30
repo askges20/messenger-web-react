@@ -35,6 +35,11 @@ const EditProfile = (props) => {
     const intro = useSelector(state => state.user.intro);
 
     useEffect(() => {
+        const inputImg = document.getElementById('inputImg');
+        inputImg.addEventListener('change', e => {
+            readImg(e.target);
+        });
+
         const profileImg = document.getElementById('profileImg');
         if (props.imgUrl === '') {
           profileImg.src = userImg;
@@ -75,13 +80,6 @@ const EditProfile = (props) => {
             reader.readAsDataURL(input.files[0]);
         }
     }
-
-    useEffect(() => {
-        const inputImg = document.getElementById('inputImg');
-        inputImg.addEventListener('change', e => {
-            readImg(e.target);
-        });
-    })
 
     return(
         <EditProfileConatiner>
@@ -180,7 +178,7 @@ const EditProfileConatiner = styled.div`
     top: 50px;
     right: 0;
     display:flex;
-    width: 80%;
+    width: 100%;
     box-sizing: border-box;
     flex-direction: column;
     justify-content: center;
