@@ -13,6 +13,7 @@ const ShowProfile = (props) => {
 
   useEffect(() => {
     const profileImg = document.getElementById('profileImg');
+    console.log(props.imgUrl);
     if (props.imgUrl === '') {
       profileImg.src = userImg;
     } else {
@@ -34,8 +35,8 @@ const ShowProfile = (props) => {
         <ProfileInfo>{intro}</ProfileInfo>
         <br/>
 
-        <ProfileInfo>{email}</ProfileInfo>
-        <ProfileInfo>2021년 9월 21일 가입</ProfileInfo>
+        <p>{email}</p><br/>
+        <p>2021년 9월 21일 가입</p>
         <EditProfileBtn onClick={goToEdit}>프로필 수정</EditProfileBtn>
       </ProfileContainer2>
     </ShowProfileConatiner>

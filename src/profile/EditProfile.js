@@ -52,7 +52,7 @@ const EditProfile = (props) => {
     }
 
     const uploadImg = () => {
-        if (image == null) {
+        if (image === '') {
             return;
         }
         //사용자 아이디를 이미지 이름으로 지정해서 storage 업로드
