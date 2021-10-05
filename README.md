@@ -11,12 +11,12 @@
 - 기타 기능 확장 예정
 
 ## 사용 기술
-- Redux를 이용한 전역 상태 관리
-- React Router을 이용한 라우팅 처리
-- Google Firebase를 통해 사용자 정보, 채팅 정보 등 데이터 관리
-- Material UI, Styled Components를 이용한 컴포넌트 스타일링
-- Formik을 이용한 Form 핸들링, Yup을 이용한 유효성 검사
-- Class Components의 라이프 사이클 함수, Functional Components의 Hook 이용
+- `Redux`를 이용한 `전역 상태 관리`
+- `React Router`을 이용한 라우팅 처리
+- `Google Firebase`를 통해 사용자 정보, 채팅 정보 등 데이터 관리
+- Material UI, Styled Components를 이용한 `컴포넌트 스타일링`
+- Formik을 이용한 `Form 핸들링`, Yup을 이용한 `유효성 검사`
+- Class Components의 `라이프 사이클 함수`, Functional Components의 `Hook` 이용
 
 ## 개발 환경 및 도구
 - IDE : VSCode
