@@ -30,12 +30,16 @@
 ## 개발 일지
 👉 [티스토리 블로그](https://askges20.tistory.com/category/Web/%5B%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%5D%20%EC%9B%B9%20%EB%A9%94%EC%8B%A0%EC%A0%80)
 
-### 2021.09.22 기준 구현 모습
+### 2021.10.22 기준 구현 모습
+<img src="https://user-images.githubusercontent.com/75527311/138340315-e65fce09-e765-4d51-b33d-46b46fa57169.PNG">
+<p align="center">사이트 접속 시 웰컴 화면</p>
+<br/>
+
 <div align="center">
-<img src="https://user-images.githubusercontent.com/75527311/134221510-e2753c07-d946-4ae7-8e88-d1231d168473.PNG">
-<img src="https://user-images.githubusercontent.com/75527311/134221520-5262dddc-0644-4ce2-80ae-4e9ded6c431a.PNG">
+<img src="https://user-images.githubusercontent.com/75527311/138340380-b68e24d7-7893-46f2-9e97-ce60ffc23812.png" width="400">
+<img src="https://user-images.githubusercontent.com/75527311/138340387-6626160a-84fd-4956-b70e-1afcaef14592.png" width="400">
 </div>
-<p align="center">유효성 검사를 거쳐서 회원가입 및 로그인 완료</p>
+<p align="center">로그인 / 회원가입</p>
 <br/>
 
 ![210919_친구찾기](https://user-images.githubusercontent.com/75527311/134221402-46d4b8b8-e507-47c9-a28b-a12eef70ba9c.PNG)
@@ -50,3 +54,10 @@
   <img src="https://user-images.githubusercontent.com/75527311/134221472-23b674ef-0983-4af9-ae92-d5bed0b43edb.png"/>
 </div>
 <p align="center">사이드바를 통해 1:1 채팅방 이동, 채팅 기능 구현 완료</p>
+<br/>
+
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/75527311/138340795-fe0f77fa-f9c6-4c0a-ad8c-35c4ef099420.PNG" height="400">
+  <img src="https://user-images.githubusercontent.com/75527311/138340920-57f5f91e-dcfd-4715-99ab-f4084b57bdc2.PNG" height="400">
+</div>
+<p align="center">마이페이지에서 프로필 확인, 수정</p>
