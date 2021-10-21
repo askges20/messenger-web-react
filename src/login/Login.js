@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from "styled-components";
 
+import '../css/gradient_background.css';
+
 import { signIn } from '../helpers/auth';
 import { auth } from '../services/firebase';
 import '../css/input.css';
@@ -15,8 +17,8 @@ const Login = (props) => {
     const history = useHistory();
 
     return(
-        <SignInConatiner>
-            <h2>로그인</h2>
+        <SignInConatiner className='background'>
+            <h2 style={{color: 'white'}}>로그인</h2>
             <Formik
                 initialValues={{ name: '', email: '', id:'', password: ''}}
 
@@ -64,9 +66,10 @@ const Login = (props) => {
                 }}
                 >
                 {formik => (
-                    <form onSubmit={formik.handleSubmit}>                        
+                    <form onSubmit={formik.handleSubmit}>
+                        <FormContainer>                  
                         <TextField label="이메일" name="email" id="email" type="email"
-                            style={{margin: '10px'}}
+                            style={{marginBottom: '10px'}}
                             {...formik.getFieldProps('email')} />
                         <br/>
                         <ErrorMessage name="email">
@@ -81,6 +84,7 @@ const Login = (props) => {
                         <ErrorMessage name="password">
                             { msg => <div style={{ color: '#6B66FF' }}>{msg}</div> }
                         </ErrorMessage>
+                        </FormContainer>
 
                         <SignInBtn type="submit">로그인</SignInBtn>
                     </form>
@@ -102,15 +106,21 @@ const SignInConatiner = styled.div`
     align-items: center;
 `;
 
+const FormContainer = styled.div`
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px 20px;
+    margin: 20px;
+`;
+
 const SignInBtn = styled.button`
-    padding: 8px 24px;
-    background-color: ${(props) => (props.outlined ? "#ffffff" : "#5587ED")};
-    color: white;
+    padding: 10px 24px;
+    background-color: white;
     font-weight: 700;
     border-radius: 30px;
-    border: 1px solid #dadafc;
+    border: 0px;
     width: 200px;
-    margin: 30px 20px;
+    margin: 10px 20px;
     cursor: pointer;
 `;
 

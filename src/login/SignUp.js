@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from "styled-components";
 
+import '../css/gradient_background.css';
+
 import { firestore } from "../services/firebase";
 import { signUp } from '../helpers/auth';
 import '../css/input.css';
@@ -17,8 +19,8 @@ const SignUp = (props) => {
     const history = useHistory();
 
     return(
-        <SignUpConatiner>
-            <h2>회원가입</h2>
+        <SignUpConatiner className='background'>
+            {/* <h2 style={{color:'white'}}>회원가입</h2> */}
             <Formik
                 initialValues={{ name: '', email: '', id:'', password: '', intro:''}}
 
@@ -41,7 +43,6 @@ const SignUp = (props) => {
                     .required('비밀번호를 입력해주세요.'),
                     intro: Yup.string()
                     .max(150, '소개글은 150글자 이하로 작성해주세요')
-                    .required('소개글을 작성해주세요')
                 })}
 
                 onSubmit = {(values, { setSubmitting }) => {
@@ -53,6 +54,7 @@ const SignUp = (props) => {
                 >
                 {formik => (
                     <form onSubmit={formik.handleSubmit}>
+                        <FormContainer>
                         <TextField label="이름" name="name" id="name" type="text" variant="outlined"
                             style={{margin: '10px', backgroundColor: 'white'}}
                             {...formik.getFieldProps('name')}
@@ -101,6 +103,7 @@ const SignUp = (props) => {
                             { msg => <div style={{ color: '#6B66FF' }}>{msg}</div> }
                         </ErrorMessage>
                         <br/>
+                        </FormContainer>
 
                         <SignUpBtn type="submit">가입하기</SignUpBtn>
                     </form>
@@ -114,7 +117,7 @@ const SignUpConatiner = styled.div`
     display:flex;
     width: 100vw;
     height: 100vh;
-    overflow: hidden;
+    // overflow: hidden;
     padding: 16px;
     box-sizing: border-box;
     flex-direction: column;
@@ -122,15 +125,21 @@ const SignUpConatiner = styled.div`
     align-items: center;
 `;
 
+const FormContainer = styled.div`
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px 20px;
+    margin: 20px;
+`;
+
 const SignUpBtn = styled.button`
-    padding: 8px 24px;
-    background-color: ${(props) => (props.outlined ? "#ffffff" : "#5587ED")};
-    color: white;
+    padding: 10px 24px;
+    background-color: white;
     font-weight: 700;
     border-radius: 30px;
-    border: 1px solid #dadafc;
+    border: 0px;
     width: 200px;
-    margin: 30px 20px;
+    margin: 10px 20px;
     cursor: pointer;
 `;
 
