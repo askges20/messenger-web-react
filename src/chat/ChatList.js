@@ -43,16 +43,18 @@ class ChatList extends React.Component {
                 const content = lastMessage.val().content;
                 const dateTime = lastMessage.val().dateTime;
                 const senderId = lastMessage.val().senderId;
+                const isRead = lastMessage.val().isRead;
+                console.log(isRead);
 
                 let flag = false;
                 lastMessageFromFB.forEach((value, i) => {
                     if (value.chatRoomNum === chatRoomNum){ //기존에 있던 채팅방이면 값을 업데이트
-                        lastMessageFromFB[i] = {chatRoomNum, content, dateTime, senderId};
+                        lastMessageFromFB[i] = {chatRoomNum, content, dateTime, senderId, isRead};
                         flag = true;
                     }
                 })
                 if (!flag) {    //새로운 채팅방이면 push
-                    lastMessageFromFB.push({chatRoomNum, content, dateTime, senderId});
+                    lastMessageFromFB.push({chatRoomNum, content, dateTime, senderId, isRead});
                 }
 
                 lastMessageFromFB.sort((a, b) => { return sortChatRoom(a, b)})
@@ -113,6 +115,7 @@ class ChatList extends React.Component {
                                 content={value.content}
                                 dateTime={value.dateTime}
                                 senderId={value.senderId}
+                                isRead={value.isRead}
                                 key={i}
                                 />
                             );

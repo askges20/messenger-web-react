@@ -1,5 +1,5 @@
 import { database } from '../services/firebase';
-import { ref, set } from 'firebase/database';
+import { ref, set, update } from 'firebase/database';
 
 export function addChatMember(chatRoomNum, id, email) {
     //채팅방의 멤버로 등록
@@ -27,7 +27,14 @@ export function updateLastMessage(chatRoomNum, content, id, date, sendTime) {
         content: content,
         senderId: id,
         dateTime: date + sendTime,
+        isRead: false
     });
+}
+
+export function readLastMessage(chatRoomNum) {
+    const updates = {};
+    updates['/ChatRooms/' + chatRoomNum + '/LastMessage/isRead'] = true;
+    update(ref(database), updates);
 }
 
 export function getChatHistory(chatRoomNum) {

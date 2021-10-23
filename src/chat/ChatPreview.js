@@ -7,6 +7,8 @@ import { useSelector } from 'react-redux';
 
 const ChatPreview = (props) => {
     const id = useSelector(state => state.user.id);
+    const senderId = props.senderId;
+    const isRead = props.isRead;
 
     const [chatDate, setChatDate] = React.useState(0);
     const [chatRoomName, setChatRoomName] = React.useState('');
@@ -45,7 +47,8 @@ const ChatPreview = (props) => {
             <ChatPreviewDiv2>
                 <LastChatTime>
                     {`${chatDate}`.slice(0, 4)}년 {`${chatDate}`.slice(4, 6).trimLeft()}월 {`${chatDate}`.slice(6, 8).trimLeft()}일</LastChatTime>
-                <NotReadChatCnt>2</NotReadChatCnt>
+                {console.log(chatRoomName, isRead)}
+                {isRead || (senderId === id) ? <div></div> : <NotReadChatCnt>N</NotReadChatCnt>}
             </ChatPreviewDiv2>
         </ChatPreviewConatiner>
     )

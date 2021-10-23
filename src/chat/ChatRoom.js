@@ -8,7 +8,7 @@ import ChatDateLine from './ChatDateLine';
 import SendChatMessage from './SendChatMessage';
 import ReceiveChatMessage from './ReceiveChatMessage';
 
-import { addChatMessage, updateLastMessage, getChatHistory } from '../helpers/database';
+import { addChatMessage, updateLastMessage, readLastMessage, getChatHistory } from '../helpers/database';
 import { connect } from 'react-redux';
 import { onValue } from '@firebase/database';
 
@@ -85,24 +85,31 @@ class ChatRoom extends React.Component {
 
     componentDidUpdate() {
         this.loadCnt += 1;
-        console.log(this.state.loadCnt);
+        console.log(this.loadCnt);
         content.current.focus();
-
-        if (this.loadCnt === 3) {  //채팅방 입장 시 가장 아래로 스크롤
-            chatContentBox.current.scrollToBottom();
-            return;
-        }
 
         const chatCnt = this.state.chatHistory.length;  //누적 채팅 개수
         if (chatCnt === 0){  //채팅 기록이 없거나 아직 채팅 내역을 불러오지 않은 상태
             return;
         }
-        
+
         const lastSenderId = this.state.chatHistory[chatCnt - 1].senderId;
         console.log(lastSenderId);
-        if (lastSenderId === this.props.loginId){    //채팅을 전송하면
-            chatContentBox.current.scrollToBottom();    //채팅 가장 아래로 자동 스크롤
+        if (lastSenderId != this.props.loginId){   //다른 사람이 보낸 마지막 메세지를 읽었을 때
+            readLastMessage(this.chatRoomNum);
         }
+
+        if (this.loadCnt === 1 || this.loadCnt >= 3) {  //채팅방 입장 시 가장 아래로 스크롤
+            chatContentBox.current.scrollToBottom();
+            return;
+        }
+        
+        // const lastSenderId = this.state.chatHistory[chatCnt - 1].senderId;
+        // console.log(lastSenderId);
+        // if (lastSenderId != this.props.loginId){   //다른 사람이 보낸 마지막 메세지를 읽었을 때
+        //     readLastMessage(this.chatRoomNum);
+        //     // chatContentBox.current.scrollToBottom();    //채팅 가장 아래로 자동 스크롤
+        // }
     }
 
     render () {
