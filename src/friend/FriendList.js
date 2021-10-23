@@ -15,25 +15,47 @@ const mapStateToProps = (state) => ({
 
 class FriendList extends React.Component {
 
+    getFriendsIntro = () => {
+        let friendsWithIntro = [];
+        console.log(this.state.friends);
+        for (let i = 0; i < this.state.friends.length; i++) {
+            const friend = this.state.friends[i];
+            firestore.collection('users').doc(friend.email).get().then((doc) => {
+                friendsWithIntro.push({...friend, intro: doc.data().intro});
+                this.setState(() => {
+                    return {friends: friendsWithIntro}
+                })
+            })
+        }
+
+        // this.state.friends.forEach((value) => {
+        //     firestore.collection('users').doc(value.email).get().then((doc) => {
+        //         // console.log(doc.data().intro);
+        //         intros.push({email: value.email, intro: doc.data().intro});
+        //     });
+        // })
+    }
+
     constructor(props) {
         super(props);
         this.state = {
-            friends: []
+            friends: [],
+            intros: []
         }
-
-        const usersFB = firestore.collection('users');
     }
 
-    componentDidMount() {
-        this.props.usersFB.doc(this.props.loginEmail).collection('friends').onSnapshot((docs) => {
+    async componentDidMount() {
+        firestore.collection('users').doc(this.props.loginEmail).collection('friends').onSnapshot((docs) => {
             let listFromFB = [];
 
             //현재는 친구 등록 시 name을 같이 저장해서 바로 가져올 수 있음
             //나중에 가능하면 name은 사용자 정보를 검색해서 가져오도록 바꿀 것
             docs.forEach((doc) => {
-                listFromFB.push({id: doc.data().id, name: doc.data().name, chatRoomNum: doc.data().chatRoomNum});
+                listFromFB.push({id: doc.data().id, name: doc.data().name, email: doc.id, chatRoomNum: doc.data().chatRoomNum});
             });
-            this.state.friends = listFromFB;
+            this.setState(() => {
+                return {friends: listFromFB};
+            }, () => {this.getFriendsIntro()});
         })
     };
 
@@ -41,6 +63,7 @@ class FriendList extends React.Component {
         return (
             <FriendListContainer>
                 <h3 style={{margin: '30px'}}>친구 목록</h3>
+                {console.log(this.state.friends)}
                 {
                     this.state.friends.map((value, i) => {
                         return (
@@ -51,6 +74,7 @@ class FriendList extends React.Component {
                                 }}>
                                     <ProfileImg src={DefaultProfile}/>
                                     <FriendName>{value.name}</FriendName>
+                                    <FriendIntro>{value.intro}</FriendIntro>
                                     {/* <div className="transition"></div> */}
                                 </Friend>
                                 <hr/>
@@ -74,7 +98,7 @@ const FriendListContainer = styled.div`
 const Friend = styled.div`
     height: 50px;
     background-color: white;
-    padding: 20px;
+    padding: 15px;
     cursor: pointer;
     text-align: left;
     display: flex;
@@ -83,7 +107,18 @@ const Friend = styled.div`
 `;
 
 const FriendName = styled.div`
-    
+    width: 100px;
+`;
+
+const FriendIntro = styled.div`
+    position: absolute;
+    right: 0;
+    width: calc(100% - 180px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: right;
+    padding-right: 20px;
 `;
 
 const ProfileImg = styled.img`
