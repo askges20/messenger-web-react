@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
 
-import SideBar from './components/SideBar';
+import FriendList from './friend/FriendList';
 import FindFriends from './friend/FindFriends';
 import ChatList from './chat/ChatList';
 import MyProfile from './profile/MyProfile';
@@ -11,8 +11,10 @@ import { userSignOut } from './helpers/auth';
 import { resetUser } from './redux/modules/user';
 import { useDispatch } from 'react-redux';
 
+import './css/gradient_background.css';
+import FriendIcon from './img/friend-icon.png'
 import ChatIcon from './img/chat-icon.png';
-import FriendIcon from './img/friends-icon.png';
+import FindFriendIcon from './img/friends-icon.png';
 import LogoutIcon from './img/logout-icon.png';
 import EditProfileIcon from './img/edit-profile-icon.png';
 
@@ -35,6 +37,8 @@ const Main = (props) => {
     const MainContent = () => {
         switch (menu){
             case 'friend':
+                return <FriendList/>;
+            case 'findFriend':
                 return <FindFriends/>;
             case 'chat':
                 return <ChatList/>;
@@ -47,13 +51,17 @@ const Main = (props) => {
 
     return(
         <MainConatiner>
-            <TopBarConatiner>
+            <TopBarConatiner className='background'>
+                <TopBarIcon src={FriendIcon} onClick={() => {
+                    setMenu('friend');
+                }}>
+                </TopBarIcon>
                 <TopBarIcon src={ChatIcon} onClick={() => {
                     setMenu('chat');
                 }}>
                 </TopBarIcon>
-                <TopBarIcon src={FriendIcon} onClick={() => {
-                    setMenu('friend');
+                <TopBarIcon src={FindFriendIcon} onClick={() => {
+                    setMenu('findFriend');
                 }}/>
                 <TopBarIcon src={EditProfileIcon} onClick={() => {
                     setMenu('edit');
@@ -63,7 +71,7 @@ const Main = (props) => {
                 }}/>
             </TopBarConatiner>
             <div>
-                <SideBar/>
+                {/* <SideBar/> */}
                 <MainContent/>
             </div>
         </MainConatiner>

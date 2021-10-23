@@ -11,7 +11,7 @@
     letter-spacing: 2px;
     color: black;
     cursor: hand;
-    text-align: center;
+    /* text-align: center; */
     position: relative;
     overflow: hidden!important;
     -webkit-transition: all .3s ease-in-out;
